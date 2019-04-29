@@ -1,6 +1,5 @@
 <template>
-<div class="line" :tabindex="lineIndex" v-focus>
-</div>
+  <input v-model="line.text" :tabindex="lineIndex" v-focus>
 </template>
 
 <script>
@@ -16,13 +15,16 @@ export default {
   },
   props: {
     lineIndex: Number,
+    line: {}
   },
   methods: {
    update:function (e) {
-   console.log("fountain",e)
+     console.log("line",this.line);
+   // console.log("fountain",e)
      //this.input = e.target.value
    },
    newLine: function(e){
+     console.log("newLine line");
      this.data.push({})
    }
  },
@@ -33,7 +35,6 @@ export default {
 
        },3000)
        e.focus()
-       e.select()
        console.log("inserted",Date.now());
      }
    }

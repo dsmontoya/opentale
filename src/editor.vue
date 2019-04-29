@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class ="editor" contenteditable="true" @input="update" v-on:input.stop="preventTest($event)" v-on:keydown.enter.prevent="newLine">
-      <script-line v-for="(line,index) in lines" :line-index=index></script-line>
+      <script-line v-for="(line,index) in lines" :line-index=index :line=line></script-line>
     </div>
   <div v-html="compiledFountain"></div>
 </div>
@@ -43,9 +43,9 @@ export default {
      console.log("testing...");
    },
    newLine:function(e){
-     console.log("newline",e);
-     this.lines.push({})
-     console.log(this.lines);
+     console.log("target", e.target);
+     console.log("lines",this.lines);
+     this.lines.splice(e.target.tabIndex+1,0,{text:"lol"})
    }
  }
 }
