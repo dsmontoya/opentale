@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from 'electron';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
-import A from "vueify-insert-css"
+
 
 
 // Keep a global reference of the window object, if you don't, the window will
