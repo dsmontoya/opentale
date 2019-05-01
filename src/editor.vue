@@ -43,9 +43,12 @@ export default {
      console.log("testing...");
    },
    newLine:function(e){
-     console.log("target", e.target);
-     console.log("lines",this.lines);
-     this.lines.splice(e.target.tabIndex+1,0,{text:"lol"})
+     var target = e.target
+     this.lines.splice(target.tabIndex+1,0,{text:"lol"})
+     setTimeout(function() {
+       var sibling = target.nextSibling
+       sibling.focus()
+     },10)
    }
  }
 }

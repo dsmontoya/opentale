@@ -34,8 +34,7 @@ export default {
        setTimeout(function(){
 
        },3000)
-       e.focus()
-       console.log("inserted",Date.now());
+       console.log("inserted");
      }
    }
  }
