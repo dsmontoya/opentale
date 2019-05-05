@@ -1,5 +1,5 @@
 <template>
-  <input v-model="line.text" v-bind:class="{focused: isFocused, blured: !isFocused}" :tabindex="lineIndex" @focus="focus" @blur="blur" v-focus>
+  <input class="line" v-model="line.text" v-bind:class="{focused: isFocused, blured: !isFocused}" :tabindex="lineIndex" @focus="focus" @blur="blur" v-focus>
 </template>
 
 <script>
