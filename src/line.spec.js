@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils'
 import Editor from './editor.vue'
+import Vue from 'vue'
 
 // Here are some Jasmine 2.0 tests, though you can
 // use any test runner / assertion library combo you prefer
@@ -14,6 +15,28 @@ describe('Editor', () => {
     line.trigger("keydown.enter")
     lines = getLines(editor)
     expect(lines).toHaveLength(2)
+  })
+
+  it('focuses the new line', () => {
+    const editor = mount(Editor, {
+      data: () => {
+        return {
+          lines: [{},{text:"abc"},{}]
+        }
+      }
+    })
+    let lines = getLines(editor)
+    let line = lines.at(1)
+    console.log("text",line.$el);
+
+    line.trigger("keydown.enter")
+    return Vue.nextTick().then(() => {
+      lines = getLines(editor)
+      let nextLine = lines.at(2)
+      expect(nextLine.classes()).toContain('focused')
+      expect(line.vm.line.text).toBe('abc')
+      expect(nextLine.vm.line.text).toBe('')
+   })
   })
 })
 

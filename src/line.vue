@@ -9,7 +9,6 @@ export default {
   data: function(){
     return {
       isFocused: false,
-      text: 'hey'
     }
   },
   computed: {
@@ -20,10 +19,13 @@ export default {
   },
   methods: {
     blur: function(e) {
+      console.log("blur", e.target.tabIndex);
       this.isFocused = false
     },
     focus: function(e) {
-      console.log("focused");
+      console.log("focused", e.target.tabIndex);
+      if (e.relatedTarget) {
+      }
       this.isFocused = true
     },
     update:function (e) {
@@ -32,7 +34,6 @@ export default {
      //this.input = e.target.value
     },
     newLine: function(e){
-     console.log("newLine line");
      this.data.push({})
     }
  },
@@ -42,7 +43,7 @@ export default {
        setTimeout(function(){
 
        },3000)
-       console.log("inserted");
+       console.log("inserted", e.tabIndex);
      }
    }
  }
