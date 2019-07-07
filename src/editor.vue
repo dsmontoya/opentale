@@ -55,12 +55,13 @@ export default {
      console.log("testing...");
    },
    newLine:function(e){
+     console.log("new line");
      var target = e.target
-     this.lines.splice(target.tabIndex+1,0,{text:"lol"})
-     setTimeout(function() {
+     this.lines.splice(target.tabIndex+1,0,{text:""})
+     this.$nextTick(function() {
        var sibling = target.nextSibling
        sibling.focus()
-     },10)
+     })
    }
  }
 }
