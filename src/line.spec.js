@@ -27,9 +27,12 @@ describe('Editor', () => {
     })
     let lines = getLines(editor)
     let line = lines.at(1)
-    console.log("text",line.$el);
+    console.log(editor.text());
+    console.log(line.text());
 
     line.trigger("keydown.enter")
+    console.log(editor.html());
+
     return Vue.nextTick().then(() => {
       lines = getLines(editor)
       let nextLine = lines.at(2)

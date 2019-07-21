@@ -52,6 +52,7 @@ export default {
 
 <style lang="scss">
   .line {
+    width: 100%;
     padding: 10px;
     min-height: 20px;
     border: 1px solid blue;
