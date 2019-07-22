@@ -64,6 +64,8 @@ export default {
      this.$nextTick(function() {
        var sibling = target.nextSibling
        sibling.focus()
+       sibling.selectionStart = 0
+       sibling.selectionEnd = 0
      })
    },
    splitText: function(text, i){
