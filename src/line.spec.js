@@ -27,11 +27,8 @@ describe('Editor', () => {
     })
     let lines = getLines(editor)
     let line = lines.at(1)
-    console.log(editor.text());
-    console.log(line.text());
-
+    line.element.selectionStart = line.text().length-1
     line.trigger("keydown.enter")
-    console.log(editor.html());
 
     return Vue.nextTick().then(() => {
       lines = getLines(editor)
