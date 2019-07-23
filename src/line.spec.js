@@ -12,7 +12,7 @@ describe('Editor', () => {
     let lines = getLines(editor)
     expect(lines).toHaveLength(1)
     const line = lines.at(0)
-    line.trigger("keydown.enter")
+    newLine(line,0)
     lines = getLines(editor)
     expect(lines).toHaveLength(2)
   })
@@ -27,8 +27,7 @@ describe('Editor', () => {
     })
     let lines = getLines(editor)
     let line = lines.at(1)
-    line.element.selectionStart = line.text().length-1
-    line.trigger("keydown.enter")
+    newLine(line, line.text().length-1)
 
     return Vue.nextTick().then(() => {
       lines = getLines(editor)
@@ -42,4 +41,9 @@ describe('Editor', () => {
 
 function getLines(e) {
   return e.findAll(".line")
+}
+
+function newLine(line, selectionStart) {
+  line.element.selectionStart = selectionStart
+  line.trigger("keydown.enter")
 }
