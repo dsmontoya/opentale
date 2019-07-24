@@ -37,6 +37,24 @@ describe('Editor', () => {
       expect(nextLine.vm.line.text).toBe('')
    })
   })
+
+  it('splits the text', () => {
+    const editor = mount(Editor, {
+      data: () => {
+        return {
+          lines: [{},{text:"abc"},{}]
+        }
+      }
+    })
+    let lines = getLines(editor)
+    let line = lines.at(1)
+    newLine(line, 1)
+    lines = getLines(editor)
+    let nextLine = lines.at(2)
+
+    expect(line.vm.line.text).toBe('a')
+    expect(nextLine.vm.line.text).toBe('bc')
+  })
 })
 
 function getLines(e) {
