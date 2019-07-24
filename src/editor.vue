@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class ="editor" contenteditable="true" @input="update" v-on:input.stop="preventTest($event)" v-on:keydown.enter.prevent="newLine" v-on:keydown.arrow-down.prevent="arrowDown" v-on:keydown.arrow-up.prevent="arrowUp">
+    <div class ="editor" contenteditable="true" @input="update" v-on:input.stop="preventTest($event)" v-on:keydown.enter.prevent="newLine" v-on:keydown.backspace.passive="backspace" v-on:keydown.arrow-down.prevent="arrowDown" v-on:keydown.arrow-up.prevent="arrowUp">
       <script-line v-for="(line,index) in lines" :line-index=index :line=line></script-line>
     </div>
   <div v-html="compiledFountain"></div>
@@ -37,6 +37,22 @@ export default {
       var previous = e.target.previousSibling
       if (previous) {
         previous.focus()
+      }
+    },
+    backspace: function(e) {
+      var target = e.target
+      var i = target.tabIndex
+      var lines = this.lines
+      var line = lines[i]
+      var selectionStart = target.selectionStart
+      if (selectionStart == 0 && lines.length > 1) {
+        var previousSibling = e.target.previousSibling
+        lines.splice(i, 1)
+        setTimeout(function () {
+          previousSibling.focus()
+        }, 100);
+        // previousSibling.selectionStart = previousSibling.value.length -1
+        return
       }
     },
     preventTest: function(e){
