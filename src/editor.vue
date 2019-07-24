@@ -13,9 +13,7 @@ const fountainConverter = require('fountain-converter');
 export default {
   data: function(){
     return {
-      input:'hey',
-      text: 'hey',
-      lines:[{}]
+      lines:[{text:''}]
     }
   },
   components: {
@@ -23,7 +21,6 @@ export default {
   },
   computed: {
     compiledFountain: function(){
-      console.log("text",this.text)
       var fountain = fountainConverter.FountainToHTML(this.text);
       console.log("result",fountain)
       return fountain
@@ -55,13 +52,23 @@ export default {
      console.log("testing...");
    },
    newLine:function(e){
-     console.log("new line");
      var target = e.target
-     this.lines.splice(target.tabIndex+1,0,{text:""})
+     var i = target.tabIndex
+     var lines = this.lines
+     var line = lines[i]
+     var selectionStart = target.selectionStart
+     var split = this.splitText(line.text, selectionStart)
+     line.text = split[0]
+     lines.splice(i+1,0,{text:split[1]})
+
      this.$nextTick(function() {
        var sibling = target.nextSibling
        sibling.focus()
+       sibling.selectionEnd = 0
      })
+   },
+   splitText: function(text, i){
+     return [text.substring(0, i), text.substring(i)]
    }
  }
 }

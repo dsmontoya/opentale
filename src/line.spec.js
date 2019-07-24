@@ -12,7 +12,7 @@ describe('Editor', () => {
     let lines = getLines(editor)
     expect(lines).toHaveLength(1)
     const line = lines.at(0)
-    line.trigger("keydown.enter")
+    newLine(line,0)
     lines = getLines(editor)
     expect(lines).toHaveLength(2)
   })
@@ -27,9 +27,8 @@ describe('Editor', () => {
     })
     let lines = getLines(editor)
     let line = lines.at(1)
-    console.log("text",line.$el);
+    newLine(line, line.text().length-1)
 
-    line.trigger("keydown.enter")
     return Vue.nextTick().then(() => {
       lines = getLines(editor)
       let nextLine = lines.at(2)
@@ -38,8 +37,31 @@ describe('Editor', () => {
       expect(nextLine.vm.line.text).toBe('')
    })
   })
+
+  it('splits the text', () => {
+    const editor = mount(Editor, {
+      data: () => {
+        return {
+          lines: [{},{text:"abc"},{}]
+        }
+      }
+    })
+    let lines = getLines(editor)
+    let line = lines.at(1)
+    newLine(line, 1)
+    lines = getLines(editor)
+    let nextLine = lines.at(2)
+
+    expect(line.vm.line.text).toBe('a')
+    expect(nextLine.vm.line.text).toBe('bc')
+  })
 })
 
 function getLines(e) {
   return e.findAll(".line")
+}
+
+function newLine(line, selectionStart) {
+  line.element.selectionStart = selectionStart
+  line.trigger("keydown.enter")
 }
