@@ -47,11 +47,15 @@ export default {
       var selectionStart = target.selectionStart
       if (selectionStart == 0 && lines.length > 1) {
         var previousSibling = e.target.previousSibling
+        var text = line.text
         lines.splice(i, 1)
+        lines[i-1].text += text
+        // TODO: test selection is the previous end of line
+        var newSelectionEnd = previousSibling.value.length
         setTimeout(function () {
           previousSibling.focus()
+          previousSibling.selectionEnd = newSelectionEnd
         }, 100);
-        // previousSibling.selectionStart = previousSibling.value.length -1
         return
       }
     },
