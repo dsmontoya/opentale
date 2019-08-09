@@ -1,5 +1,5 @@
 <template>
-  <input class="line" v-model="line.text" v-bind:class="{focused: isFocused, blured: !isFocused}" :tabindex="lineIndex" @focus="focus" @blur="blur" v-focus>
+  <input class="line" v-model="line.text" v-bind:class="{focused: isFocused, blured: !isFocused}" v-on:keydown.enter.prevent="newLine" :tabindex="lineIndex" @focus="focus" @blur="blur" v-focus>
 </template>
 
 <script>
@@ -34,7 +34,8 @@ export default {
      //this.input = e.target.value
     },
     newLine: function(e){
-     this.data.push({})
+      console.log(this.$el.tabIndex);
+     console.log("enter from line");
     }
  },
  directives: {

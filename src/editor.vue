@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class ="editor" contenteditable="true" @input="update" v-on:input.stop="preventTest($event)" v-on:keydown.enter.prevent="newLine" v-on:keydown.backspace.passive="backspace" v-on:keydown.arrow-down.prevent="arrowDown" v-on:keydown.arrow-up.prevent="arrowUp">
+    <div class ="editor" contenteditable="true" @input="update" v-on:input.stop="preventTest($event)" v-on:keydown.backspace.passive="backspace" v-on:keydown.arrow-down.prevent="arrowDown" v-on:keydown.arrow-up.prevent="arrowUp">
       <script-line v-for="(line,index) in lines" :line-index=index :line=line></script-line>
     </div>
   <div v-html="compiledFountain"></div>
