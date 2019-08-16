@@ -77,6 +77,7 @@ export default {
      split = this.splitText(line.text, line.selectionStart)
      this.lines[line.index].text = split[0]
      this.lines.splice(line.index+1,0,{text: split[1]})
+     this.lines[line.index+1].isFocused = true
      // var target = e.target
      // var i = target.tabIndex
      // var lines = this.lines

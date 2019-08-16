@@ -20,13 +20,13 @@ export default {
   methods: {
     blur: function(e) {
       console.log("blur", e.target.tabIndex);
-      this.isFocused = false
+      this.line.isFocused = false
     },
     focus: function(e) {
       console.log("focused", e.target.tabIndex);
       if (e.relatedTarget) {
       }
-      this.isFocused = true
+      this.line.isFocused = true
     },
     update:function (e) {
      console.log("line",this.line);
@@ -44,13 +44,23 @@ export default {
      })
     }
  },
+ watch: {
+   // whenever question changes, this function will run
+   line: function (newValue, oldValue) {
+    console.log("focus watch",newValue,oldValue);
+    // if (newValue) {
+    //   this.$el.focus()
+    // } else {
+    //   this.$el.blur()
+    // }
+   }
+ },
  directives: {
    focus: {
      inserted: function(e){
        setTimeout(function(){
 
        },3000)
-       e.focus()
        console.log("inserted", e);
      }
    }
