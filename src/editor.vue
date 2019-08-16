@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class ="editor" contenteditable="true" @input="update" v-on:input.stop="preventTest($event)" v-on:keydown.backspace.passive="backspace" v-on:keydown.arrow-down.prevent="arrowDown" v-on:keydown.arrow-up.prevent="arrowUp">
-      <script-line v-for="(line,index) in lines" :line-index=index :line=line></script-line>
+      <script-line v-for="(line,index) in lines" :line-index=index @newLine="newLine" :line=line></script-line>
     </div>
   <div v-html="compiledFountain"></div>
 </div>
@@ -71,21 +71,26 @@ export default {
    test: function(e){
      console.log("testing...");
    },
-   newLine:function(e){
-     var target = e.target
-     var i = target.tabIndex
-     var lines = this.lines
-     var line = lines[i]
-     var selectionStart = target.selectionStart
-     var split = this.splitText(line.text, selectionStart)
-     line.text = split[0]
-     lines.splice(i+1,0,{text:split[1]})
-
-     this.$nextTick(function() {
-       var sibling = target.nextSibling
-       sibling.focus()
-       sibling.selectionEnd = 0
-     })
+   newLine:function(line){
+     var split
+     console.log("newline editor",line);
+     split = this.splitText(line.text, line.selectionStart)
+     this.lines[line.index].text = split[0]
+     this.lines.splice(line.index+1,0,{text: split[1]})
+     // var target = e.target
+     // var i = target.tabIndex
+     // var lines = this.lines
+     // var line = lines[i]
+     // var selectionStart = target.selectionStart
+     // var split = this.splitText(line.text, selectionStart)
+     // line.text = split[0]
+     // lines.splice(i+1,0,{text:split[1]})
+     //
+     // this.$nextTick(function() {
+     //   var sibling = target.nextSibling
+     //   sibling.focus()
+     //   sibling.selectionEnd = 0
+     // })
    },
    splitText: function(text, i){
      return [text.substring(0, i), text.substring(i)]

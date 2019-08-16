@@ -34,8 +34,14 @@ export default {
      //this.input = e.target.value
     },
     newLine: function(e){
-      console.log(this.$el.tabIndex);
-     console.log("enter from line");
+      var tabIndex = this.$el.tabIndex
+      console.log(tabIndex);
+     console.log("enter from line",this);
+     this.$emit("newLine",{
+       index: tabIndex,
+       text: this.line.text,
+       selectionStart: this.$el.selectionStart
+     })
     }
  },
  directives: {
@@ -44,7 +50,8 @@ export default {
        setTimeout(function(){
 
        },3000)
-       console.log("inserted", e.tabIndex);
+       e.focus()
+       console.log("inserted", e);
      }
    }
  }
