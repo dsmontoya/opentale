@@ -73,11 +73,16 @@ export default {
    },
    newLine:function(line){
      var split
-     console.log("newline editor",line);
+     var newChild
      split = this.splitText(line.text, line.selectionStart)
      this.lines[line.index].text = split[0]
      this.lines.splice(line.index+1,0,{text: split[1]})
      this.lines[line.index+1].isFocused = true
+     this.$nextTick(function() {
+       newChild = this.$children[line.index+1]
+       newChild.$el.selectionEnd = 0
+       newChild.$el.focus()
+     })
      // var target = e.target
      // var i = target.tabIndex
      // var lines = this.lines

@@ -20,13 +20,11 @@ export default {
   methods: {
     blur: function(e) {
       console.log("blur", e.target.tabIndex);
-      this.line.isFocused = false
     },
     focus: function(e) {
       console.log("focused", e.target.tabIndex);
       if (e.relatedTarget) {
       }
-      this.line.isFocused = true
     },
     update:function (e) {
      console.log("line",this.line);
@@ -34,26 +32,17 @@ export default {
      //this.input = e.target.value
     },
     newLine: function(e){
-      var tabIndex = this.$el.tabIndex
-      console.log(tabIndex);
-     console.log("enter from line",this);
-     this.$emit("newLine",{
-       index: tabIndex,
-       text: this.line.text,
-       selectionStart: this.$el.selectionStart
-     })
+      var el = this.$el
+      var tabIndex = el.tabIndex
+      this.$emit("newLine",{
+        index: tabIndex,
+        text: this.line.text,
+        selectionStart: el.selectionStart,
+        selectionEnd : el.selectionEnd
+      })
     }
  },
  watch: {
-   // whenever question changes, this function will run
-   line: function (newValue, oldValue) {
-    console.log("focus watch",newValue,oldValue);
-    // if (newValue) {
-    //   this.$el.focus()
-    // } else {
-    //   this.$el.blur()
-    // }
-   }
  },
  directives: {
    focus: {
