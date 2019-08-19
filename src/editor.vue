@@ -1,7 +1,7 @@
 <template>
 <div>
-    <div class ="editor" contenteditable="true" @input="update" v-on:input.stop="preventTest($event)" v-on:keydown.backspace.passive="backspace" v-on:keydown.arrow-down.prevent="arrowDown" v-on:keydown.arrow-up.prevent="arrowUp">
-      <script-line v-for="(line,index) in lines" :line-index=index @newLine="newLine" :line=line></script-line>
+    <div class ="editor" contenteditable="true" @input="update" v-on:input.stop="preventTest($event)" v-on:keydown.arrow-down.prevent="arrowDown" v-on:keydown.arrow-up.prevent="arrowUp">
+      <script-line v-for="(line,index) in lines" :line-index=index @backspace="backspace" @newLine="newLine" :line=line></script-line>
     </div>
   <div v-html="compiledFountain"></div>
 </div>
@@ -39,25 +39,42 @@ export default {
         previous.focus()
       }
     },
-    backspace: function(e) {
-      var target = e.target
-      var i = target.tabIndex
+    backspace: function(line) {
       var lines = this.lines
-      var line = lines[i]
-      var selectionStart = target.selectionStart
-      if (selectionStart == 0 && lines.length > 1) {
-        var previousSibling = e.target.previousSibling
+      var that = this
+      if (line.selectionStart == 0 && lines.length > 1) {
+        var previousLine = lines[line.index -1]
+        var newSelectionEnd = previousLine.text.length+1
         var text = line.text
-        lines.splice(i, 1)
-        lines[i-1].text += text
+        var child = that.$children[line.index-1]
+        lines.splice(line.index, 1)
+        previousLine.text += " "+text
+        child.$el.focus()
         // TODO: test selection is the previous end of line
-        var newSelectionEnd = previousSibling.value.length
-        setTimeout(function () {
-          previousSibling.focus()
-          previousSibling.selectionEnd = newSelectionEnd
-        }, 100);
+        this.$nextTick(function () {
+          child.$el.selectionEnd = newSelectionEnd
+          child.$el.selectionStart = newSelectionEnd
+        })
         return
       }
+      // var target = e.target
+      // var i = target.tabIndex
+      // var lines = this.lines
+      // var line = lines[i]
+      // var selectionStart = target.selectionStart
+      // if (selectionStart == 0 && lines.length > 1) {
+      //   var previousSibling = e.target.previousSibling
+      //   var text = line.text
+      //   lines.splice(i, 1)
+      //   lines[i-1].text += text
+      //   // TODO: test selection is the previous end of line
+      //   var newSelectionEnd = previousSibling.value.length
+      //   setTimeout(function () {
+      //     previousSibling.focus()
+      //     previousSibling.selectionEnd = newSelectionEnd
+      //   }, 100);
+      //   return
+      // }
     },
     preventTest: function(e){
       e.stopPropagation()

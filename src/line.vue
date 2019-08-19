@@ -1,5 +1,5 @@
 <template>
-  <input class="line" v-model="line.text" v-bind:class="{focused: isFocused, blured: !isFocused}" v-on:keydown.enter.prevent="newLine" :tabindex="lineIndex" @focus="focus" @blur="blur" v-focus>
+  <input class="line" v-model="line.text" v-bind:class="{focused: isFocused, blured: !isFocused}" v-on:keydown.enter.prevent="newLine" v-on:keydown.backspace.passive="backspace" :tabindex="lineIndex" @focus="focus" @blur="blur" v-focus>
 </template>
 
 <script>
@@ -31,15 +31,23 @@ export default {
     // console.log("fountain",e)
      //this.input = e.target.value
     },
+    backspace: function(e) {
+      this.$emit("backspace", this.emitLine())
+      console.log("emited");
+    },
     newLine: function(e){
+      this.$emit("newLine", this.emitLine())
+    },
+    emitLine: function() {
+      console.log("emitLine");
       var el = this.$el
       var tabIndex = el.tabIndex
-      this.$emit("newLine",{
+      return {
         index: tabIndex,
         text: this.line.text,
         selectionStart: el.selectionStart,
         selectionEnd : el.selectionEnd
-      })
+      }
     }
  },
  watch: {
