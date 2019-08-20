@@ -41,13 +41,14 @@ export default {
     },
     backspace: function(line) {
       var lines = this.lines
+      var i = line.index
+      var previousLine = lines[i -1]
       var that = this
-      if (line.selectionStart == 0 && lines.length > 1) {
-        var previousLine = lines[line.index -1]
+      if (line.selectionStart == 0 && lines.length > 1 && previousLine) {
         var newSelectionEnd = previousLine.text.length+1
         var text = line.text
-        var child = that.$children[line.index-1]
-        lines.splice(line.index, 1)
+        var child = that.$children[i-1]
+        lines.splice(i, 1)
         previousLine.text += " "+text
         child.$el.focus()
         // TODO: test selection is the previous end of line
@@ -94,7 +95,7 @@ export default {
      split = this.splitText(line.text, line.selectionStart)
      this.lines[line.index].text = split[0]
      this.lines.splice(line.index+1,0,{text: split[1]})
-     this.lines[line.index+1].isFocused = true
+     // this.lines[line.index+1].isFocused = true
      this.$nextTick(function() {
        newChild = this.$children[line.index+1]
        newChild.$el.selectionEnd = 0

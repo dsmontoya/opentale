@@ -21,7 +21,7 @@ describe('Editor', () => {
     const editor = mount(Editor, {
       data: () => {
         return {
-          lines: [{},{text:"abc"},{}]
+          lines: [{text:""},{text:"abc"},{text:""}]
         }
       }
     })
@@ -42,7 +42,7 @@ describe('Editor', () => {
     const editor = mount(Editor, {
       data: () => {
         return {
-          lines: [{},{text:"abc"},{}]
+          lines: [{text:""},{text:"abc"},{text:""}]
         }
       }
     })

@@ -20,11 +20,13 @@ export default {
   methods: {
     blur: function(e) {
       console.log("blur", e.target.tabIndex);
+      this.isFocused = false
     },
     focus: function(e) {
       console.log("focused", e.target.tabIndex);
       if (e.relatedTarget) {
       }
+      this.isFocused = true
     },
     update:function (e) {
      console.log("line",this.line);
@@ -33,7 +35,6 @@ export default {
     },
     backspace: function(e) {
       this.$emit("backspace", this.emitLine())
-      console.log("emited");
     },
     newLine: function(e){
       this.$emit("newLine", this.emitLine())
@@ -58,7 +59,6 @@ export default {
        setTimeout(function(){
 
        },3000)
-       console.log("inserted", e);
      }
    }
  }
