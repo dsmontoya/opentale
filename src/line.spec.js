@@ -55,6 +55,27 @@ describe('Editor', () => {
     expect(line.vm.line.text).toBe('a')
     expect(nextLine.vm.line.text).toBe('bc')
   })
+
+  it('removes a line', () => {
+    const editor = mount(Editor, {
+      data: () => {
+        return {
+          lines: [{text:"abc"},{text:"def"},{text:"ghi"}]
+        }
+      }
+    })
+    let lines = getLines(editor)
+    let line = lines.at(1)
+    backspace(line, 0)
+
+    return Vue.nextTick().then(() => {
+      lines = getLines(editor)
+      let firstLine = lines.at(0)
+
+      expect(line.vm.line.text).toBe('ghi')
+      expect(firstLine.vm.line.text).toBe('abc def') /// NOTE: hotfix
+   })
+  })
 })
 
 function getLines(e) {
@@ -64,4 +85,9 @@ function getLines(e) {
 function newLine(line, selectionStart) {
   line.element.selectionStart = selectionStart
   line.trigger("keydown.enter")
+}
+
+function backspace(line, selectionStart) {
+  line.element.selectionStart = selectionStart
+  line.trigger("keydown.backspace")
 }
