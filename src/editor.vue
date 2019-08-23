@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class ="editor" contenteditable="true" @input="update" v-on:input.stop="preventTest($event)" v-on:keydown.arrow-down.prevent="arrowDown" v-on:keydown.arrow-up.prevent="arrowUp">
-      <script-line v-for="(line,index) in lines" :line-index=index @backspace="backspace" @newLine="newLine" :line=line></script-line>
+      <script-line v-for="(line,index) in lines" :line-index=index @backspace="backspace" @delete="del" @newLine="newLine" :line=line></script-line>
     </div>
   <div v-html="compiledFountain"></div>
 </div>
@@ -43,11 +43,10 @@ export default {
       var lines = this.lines
       var i = line.index
       var previousLine = lines[i -1]
-      var that = this
       if (line.selectionStart == 0 && lines.length > 1 && previousLine) {
         var newSelectionEnd = previousLine.text.length+1
         var text = line.text
-        var child = that.$children[i-1]
+        var child = this.$children[i-1]
         lines.splice(i, 1)
         previousLine.text += " "+text
         child.$el.focus()
@@ -58,24 +57,33 @@ export default {
         })
         return
       }
-      // var target = e.target
-      // var i = target.tabIndex
-      // var lines = this.lines
-      // var line = lines[i]
-      // var selectionStart = target.selectionStart
-      // if (selectionStart == 0 && lines.length > 1) {
-      //   var previousSibling = e.target.previousSibling
-      //   var text = line.text
-      //   lines.splice(i, 1)
-      //   lines[i-1].text += text
-      //   // TODO: test selection is the previous end of line
-      //   var newSelectionEnd = previousSibling.value.length
-      //   setTimeout(function () {
-      //     previousSibling.focus()
-      //     previousSibling.selectionEnd = newSelectionEnd
-      //   }, 100);
-      //   return
-      // }
+    },
+    del: function(line) {
+      console.log("del");
+      var lines = this.lines
+      var i = line.index
+      var nextLine = lines[i+1]
+      console.log(line.selectionStart,line.text.length);
+      console.log(lines.length);
+      console.log(nextLine);
+      if (nextLine) {
+        console.log("simon");
+      }
+      if (line.selectionStart == line.text.length-1 && lines.length > 1 && nextLine) {
+        console.log("yay");
+        var newSelectionEnd = nextLine.text.length+1
+        var text = line.text
+        var child = this.$children[i-1]
+        lines.splice(i, 1)
+        nextLine.text += " "+text
+        child.$el.focus()
+        // TODO: test selection is the previous end of line
+        this.$nextTick(function () {
+          child.$el.selectionEnd = newSelectionEnd
+          child.$el.selectionStart = newSelectionEnd
+        })
+        return
+      }
     },
     preventTest: function(e){
       e.stopPropagation()
