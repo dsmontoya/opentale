@@ -10,10 +10,28 @@
 <script>
 import ScriptLine from './line'
 const fountainConverter = require('fountain-converter');
+const lineTypes = {
+  SCENE_HEADING: "scene_heading",
+  ACTION: "action",
+  CHARACTER: "character",
+  PARENTHETICAL: "parenthetical",
+  DIALOGUE: "dialogue",
+  TRANSITION: "transition",
+  SHOT: "shot",
+  NORMAL: "normal",
+  FORMATTING: {
+    BOLD: "bold",
+    ITALIC: "italic",
+    UNDERLINE: "underline",
+    STRIKETHROUGH: "strikethrough",
+    CENTER: "center"
+  },
+  CUSTOM: "custom"
+}
 export default {
   data: function(){
     return {
-      lines:[{text:''}]
+      lines:[{text:'', type: lineTypes.ACTION}]
     }
   },
   components: {

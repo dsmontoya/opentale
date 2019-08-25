@@ -1,5 +1,5 @@
 <template>
-  <input class="line" v-model="line.text" v-bind:class="{focused: isFocused, blured: !isFocused}" v-on:keydown.enter.prevent="newLine" v-on:keydown.delete.passive="del" :tabindex="lineIndex" @focus="focus" @blur="blur" v-focus>
+  <input class="line" v-model="line.text" v-bind:class="[line.type, {focused: isFocused, blured: !isFocused}]"  v-on:keydown.enter.prevent="newLine" v-on:keydown.delete.passive="del" :tabindex="lineIndex" @focus="focus" @blur="blur" v-focus>
 </template>
 
 <script>
