@@ -34,7 +34,6 @@ export default {
      //this.input = e.target.value
     },
     del: function(e) {
-      console.log("e",e);
       if (e.keyCode == 8) {
         this.$emit("backspace", this.emitLine())
       } else {

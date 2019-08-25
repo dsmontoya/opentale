@@ -56,7 +56,7 @@ describe('Editor', () => {
     expect(nextLine.vm.line.text).toBe('bc')
   })
 
-  it('removes a line', () => {
+  it('removes a line when backspace is pressed', () => {
     const editor = mount(Editor, {
       data: () => {
         return {
@@ -76,6 +76,27 @@ describe('Editor', () => {
       expect(firstLine.vm.line.text).toBe('abc def') /// NOTE: hotfix
    })
   })
+
+  it('removes a line when delete is pressed', () => {
+    const editor = mount(Editor, {
+      data: () => {
+        return {
+          lines: [{text:"abc"},{text:"def"},{text:"ghi"}]
+        }
+      }
+    })
+    let lines = getLines(editor)
+    let line = lines.at(1)
+    del(line, 3)
+
+    return Vue.nextTick().then(() => {
+      lines = getLines(editor)
+      let firstLine = lines.at(0)
+
+      expect(line.vm.line.text).toBe('def ghi')
+      expect(firstLine.vm.line.text).toBe('abc')
+    })
+  })
 })
 
 function getLines(e) {
@@ -90,4 +111,9 @@ function newLine(line, selectionStart) {
 function backspace(line, selectionStart) {
   line.element.selectionStart = selectionStart
   line.trigger("keydown.backspace")
+}
+
+function del(line, selectionStart) {
+  line.element.selectionStart = selectionStart
+  line.trigger("keydown.delete")
 }

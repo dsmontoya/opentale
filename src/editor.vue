@@ -59,24 +59,15 @@ export default {
       }
     },
     del: function(line) {
-      console.log("del");
       var lines = this.lines
       var i = line.index
       var nextLine = lines[i+1]
-      console.log(line.selectionStart,line.text.length);
-      console.log(lines.length);
-      console.log(nextLine);
-      if (nextLine) {
-        console.log("simon");
-      }
-      if (line.selectionStart == line.text.length-1 && lines.length > 1 && nextLine) {
-        console.log("yay");
-        var newSelectionEnd = nextLine.text.length+1
-        var text = line.text
-        var child = this.$children[i-1]
-        lines.splice(i, 1)
-        nextLine.text += " "+text
-        child.$el.focus()
+      if (line.selectionStart == line.text.length && lines.length > 1 && nextLine) {
+        var newSelectionEnd = line.text.length
+        var text = nextLine.text
+        var child = this.$children[i]
+        lines.splice(i+1, 1)
+        lines[i].text += " " + text
         // TODO: test selection is the previous end of line
         this.$nextTick(function () {
           child.$el.selectionEnd = newSelectionEnd
