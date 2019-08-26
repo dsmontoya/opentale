@@ -77,6 +77,9 @@ export default {
     min-height: 20px;
     border: 1px solid blue;
   }
+  .scene_heading {
+    text-transform: uppercase;
+  }
   .character {
     text-transform: uppercase;
   }
