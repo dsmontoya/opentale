@@ -71,6 +71,7 @@ export default {
 
 <style lang="scss">
   .line {
+    font-family: courier;
     width: 100%;
     padding: 10px;
     min-height: 20px;
