@@ -11,14 +11,17 @@
 import ScriptLine from './line'
 const fountainConverter = require('fountain-converter');
 const lineTypes = {
+  ACT: "act",
   SCENE_HEADING: "scene_heading",
   ACTION: "action",
   CHARACTER: "character",
-  PARENTHETICAL: "parenthetical",
   DIALOGUE: "dialogue",
+  PARENTHETICAL: "parenthetical",
   TRANSITION: "transition",
   SHOT: "shot",
   NORMAL: "normal",
+}
+const extraLineTypes = {
   FORMATTING: {
     BOLD: "bold",
     ITALIC: "italic",
