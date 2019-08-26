@@ -9,6 +9,8 @@
 
 <script>
 import ScriptLine from './line'
+import {lineTypes} from './line-types'
+
 const fountainConverter = require('fountain-converter');
 
 export default {
