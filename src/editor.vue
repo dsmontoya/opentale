@@ -31,7 +31,7 @@ const lineTypes = {
 export default {
   data: function(){
     return {
-      lines:[{text:'', type: lineTypes.ACTION}]
+      lines:[{text:'', type: lineTypes.SCENE_HEADING}]
     }
   },
   components: {
