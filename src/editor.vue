@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import ScriptLine from './line'
-import {lineTypes} from './line-types'
+const ScriptLine = require('./line')
+const {lineTypes} = require('./linetypes')
 
 const fountainConverter = require('fountain-converter');
 

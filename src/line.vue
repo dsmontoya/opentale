@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Vue from 'vue';
+const Vue = requiere('vue')
 
 export default {
   data: function(){

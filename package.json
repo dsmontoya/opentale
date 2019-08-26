@@ -17,45 +17,40 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "make_targets": {
-        "win32": [
-          "squirrel"
-        ],
-        "darwin": [
-          "zip"
-        ],
-        "linux": [
-          "deb",
-          "rpm"
-        ]
-      },
-      "electronPackagerConfig": {
-        "packageManager": "npm"
-      },
-      "electronWinstallerConfig": {
-        "name": "opentale"
-      },
-      "electronInstallerDebian": {},
-      "electronInstallerRedhat": {},
-      "github_repository": {
-        "owner": "",
-        "name": ""
-      },
-      "windowsStoreConfig": {
-        "packageName": "",
-        "name": "opentale"
-      }
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "opentale"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
     }
   },
   "dependencies": {
     "@vue/test-utils": "^1.0.0-beta.29",
-    "babel-jest": "^24.7.1",
-    "electron": "^5.0.0",
+    "babel-jest": "^24.9.0",
     "electron-devtools-installer": "^2.2.4",
     "electron-squirrel-startup": "^1.0.0",
     "fountain-converter": "^1.1.4",
     "jest-serializer-vue": "^2.0.2",
     "jest-transform-stub": "^2.0.0",
+    "source-map-support": "^0.5.13",
     "ts-jest": "^24.0.2",
     "vue": "^2.6.10",
     "vue-jest": "^3.0.4",
@@ -63,7 +58,12 @@
     "vueify": "^9.4.1"
   },
   "devDependencies": {
-    "electron-forge": "^5.2.4",
+    "@electron-forge/cli": "^6.0.0-beta.44",
+    "@electron-forge/maker-deb": "^6.0.0-beta.44",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.44",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.44",
+    "@electron-forge/maker-zip": "^6.0.0-beta.44",
+    "electron": "6.0.4",
     "electron-prebuilt-compile": "2.0.0",
     "jest": "^24.7.1"
   }

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Editor from './editor'
+const Editor = requiere('./editor')
 // import "vueify/lib/insert-css"
 export default {
   el: "#app",

@@ -1,6 +1,5 @@
-import { app, BrowserWindow } from 'electron';
-import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
-import { enableLiveReload } from 'electron-compile';
+const { app, BrowserWindow } = require('electron');
+const { installExtension, VUEJS_DEVTOOLS } =  require('electron-devtools-installer');
 
 
 
@@ -10,7 +9,6 @@ let mainWindow;
 
 const isDevMode = process.execPath.match(/[\\/]electron/);
 
-if (isDevMode) enableLiveReload();
 
 const createWindow = async () => {
   // Create the browser window.
@@ -23,10 +21,7 @@ const createWindow = async () => {
   mainWindow.loadURL(`file://${__dirname}/index.html`);
 
   // Open the DevTools.
-  if (isDevMode) {
-    await installExtension(VUEJS_DEVTOOLS);
-    mainWindow.webContents.openDevTools();
-  }
+  mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
