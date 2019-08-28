@@ -3,7 +3,7 @@
 </template>
 
 <script>
-const Vue = requiere('vue')
+const Vue = require('vue')
 
 export default {
   data: function(){
@@ -69,7 +69,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="css">
   .line {
     font-family: courier;
     width: 100%;

@@ -75,6 +75,7 @@
     "vueify": "^9.4.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.5.5",
     "@electron-forge/cli": "^6.0.0-beta.44",
     "@electron-forge/maker-deb": "^6.0.0-beta.44",
     "@electron-forge/maker-rpm": "^6.0.0-beta.44",
@@ -85,7 +86,6 @@
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
     "electron": "6.0.4",
-    "electron-prebuilt-compile": "2.0.0",
     "jest": "^24.7.1",
     "vue-loader": "^15.7.1",
     "vue-style-loader": "^4.1.2",

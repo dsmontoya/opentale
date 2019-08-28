@@ -8,7 +8,7 @@
 </template>
 
 <script>
-const ScriptLine = require('./line')
+const ScriptLine = require('./line.vue')
 const {lineTypes} = require('./linetypes')
 
 const fountainConverter = require('fountain-converter');
