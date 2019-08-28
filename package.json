@@ -3,7 +3,7 @@
   "productName": "opentale",
   "version": "1.0.0",
   "description": "My Electron application description",
-  "main": "./.webpack/main",
+  "main": ".webpack/main",
   "scripts": {
     "test": "jest --config src/jest.config.js",
     "start": "electron-forge start",
@@ -44,13 +44,13 @@
         [
           "@electron-forge/plugin-webpack",
           {
-            "mainConfig": "./webpack.config.js",
+            "mainConfig": "./webpack.main.config.js",
             "renderer": {
-              "config": "./webpack.config.js",
+              "config": "./webpack.renderer.config.js",
               "entryPoints": [
                 {
                   "html": "./src/index.html",
-                  "js": "./src/index.js",
+                  "js": "./src/renderer.js",
                   "name": "main_window"
                 }
               ]
@@ -81,6 +81,7 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.44",
     "@electron-forge/maker-zip": "^6.0.0-beta.44",
     "@electron-forge/plugin-webpack": "^6.0.0-beta.44",
+    "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
     "electron": "6.0.4",
