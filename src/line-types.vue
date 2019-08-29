@@ -1,15 +1,4 @@
 <script>
-export const lineTypes = {
-  ACT: "act",
-  SCENE_HEADING: "scene_heading",
-  ACTION: "action",
-  CHARACTER: "character",
-  DIALOGUE: "dialogue",
-  PARENTHETICAL: "parenthetical",
-  TRANSITION: "transition",
-  SHOT: "shot",
-  NORMAL: "normal",
-}
 export const extraLineTypes = {
   FORMATTING: {
     BOLD: "bold",
@@ -21,31 +10,41 @@ export const extraLineTypes = {
   CUSTOM: "custom"
 }
 
-export const nextType = function (t) {
-  switch (t) {
-    case lineTypes.ACTION:
-    case lineTypes.SHOT:
-    case lineTypes.SCENE_HEADING:
-      return lineTypes.ACTION
-      break
-    case lineTypes.CHARACTER:
-    case lineTypes.PARENTHETICAL:
-      return lineTypes.DIALOGUE
-      break
-    case lineTypes.DIALOGUE:
-      return lineTypes.CHARACTER
-      break
-    case lineTypes.TRANSITION:
-    case lineTypes.ACT:
-      return lineTypes.SCENE_HEADING
-      break
-    case lineTypes.NORMAL:
-      return lineTypes.NORMAL
-      break
-    default:
+export default {
+  ACT: "act",
+  SCENE_HEADING: "scene_heading",
+  ACTION: "action",
+  CHARACTER: "character",
+  DIALOGUE: "dialogue",
+  PARENTHETICAL: "parenthetical",
+  TRANSITION: "transition",
+  SHOT: "shot",
+  NORMAL: "normal",
 
+  next: function (t) {
+    switch (t) {
+      case this.ACTION:
+      case this.SHOT:
+      case this.SCENE_HEADING:
+        return this.ACTION
+        break
+      case this.CHARACTER:
+      case this.PARENTHETICAL:
+        return this.DIALOGUE
+        break
+      case this.DIALOGUE:
+        return this.CHARACTER
+        break
+      case this.TRANSITION:
+      case this.ACT:
+        return this.SCENE_HEADING
+        break
+      case this.NORMAL:
+        return this.NORMAL
+        break
+      default:
+
+    }
   }
 }
-
-export default {}
 </script>

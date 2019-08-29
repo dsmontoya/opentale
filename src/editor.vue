@@ -9,14 +9,14 @@
 
 <script>
 import ScriptLine from './line'
-import {lineTypes, nextType} from './line-types'
+import LineType from './line-types'
 
 const fountainConverter = require('fountain-converter');
 
 export default {
   data: function(){
     return {
-      lines:[{text:'', type: lineTypes.SCENE_HEADING}]
+      lines:[{text:'', type: LineType.SCENE_HEADING}]
     }
   },
   components: {
@@ -88,15 +88,12 @@ export default {
    this.$emit("update",e.target)
      //this.input = e.target.value
    },
-   test: function(e){
-     console.log("testing...");
-   },
    newLine:function(line){
      var split
      var newChild
      split = this.splitText(line.text, line.selectionStart)
      this.lines[line.index].text = split[0]
-     this.lines.splice(line.index+1,0,{text: split[1], type: nextType(line.type)})
+     this.lines.splice(line.index+1,0,{text: split[1], type: LineType.next(line.type)})
      // this.lines[line.index+1].isFocused = true
      this.$nextTick(function() {
        newChild = this.$children[line.index+1]
