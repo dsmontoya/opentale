@@ -35,6 +35,7 @@ export const nextType = function (t) {
       return lineTypes.CHARACTER
       break
     case lineTypes.TRANSITION:
+    case lineTypes.ACT:
       return lineTypes.SCENE_HEADING
       break
     case lineTypes.NORMAL:
