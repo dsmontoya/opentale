@@ -20,4 +20,26 @@ export const extraLineTypes = {
   CUSTOM: "custom"
 }
 
+export const nextType = function (t) {
+  switch (t) {
+    case lineTypes.ACTION, lineTypes.SHOT, lineTypes.SCENE_HEADING:
+      return lineTypes.ACTION
+      break
+    case lineTypes.CHARACTER, lineTypes.PARENTHETICAL:
+      return lineTypes.DIALOGUE
+      break
+    case lineTypes.DIALOGUE:
+      return lineTypes.CHARACTER
+      break
+    case lineTypes.TRANSITION:
+      return lineTypes.SCENE_HEADING
+      break
+    case lineTypes.NORMAL:
+      return lineTypes.NORMAL
+      break
+    default:
+
+  }
+}
+
 export default {}
