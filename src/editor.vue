@@ -9,7 +9,7 @@
 
 <script>
 import ScriptLine from './line'
-import {lineTypes} from './line-types'
+import {lineTypes, nextType} from './line-types'
 
 const fountainConverter = require('fountain-converter');
 
@@ -96,7 +96,7 @@ export default {
      var newChild
      split = this.splitText(line.text, line.selectionStart)
      this.lines[line.index].text = split[0]
-     this.lines.splice(line.index+1,0,{text: split[1]})
+     this.lines.splice(line.index+1,0,{text: split[1], type: nextType(line.type)})
      // this.lines[line.index+1].isFocused = true
      this.$nextTick(function() {
        newChild = this.$children[line.index+1]

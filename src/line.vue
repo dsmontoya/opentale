@@ -44,14 +44,15 @@ export default {
       this.$emit("newLine", this.emitLine())
     },
     emitLine: function() {
-      console.log("emitLine");
+    
       var el = this.$el
       var tabIndex = el.tabIndex
       return {
         index: tabIndex,
         text: this.line.text,
         selectionStart: el.selectionStart,
-        selectionEnd : el.selectionEnd
+        selectionEnd : el.selectionEnd,
+        type: this.line.type
       }
     }
  },
