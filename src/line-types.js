@@ -22,10 +22,13 @@ export const extraLineTypes = {
 
 export const nextType = function (t) {
   switch (t) {
-    case lineTypes.ACTION, lineTypes.SHOT, lineTypes.SCENE_HEADING:
+    case lineTypes.ACTION:
+    case lineTypes.SHOT:
+    case lineTypes.SCENE_HEADING:
       return lineTypes.ACTION
       break
-    case lineTypes.CHARACTER, lineTypes.PARENTHETICAL:
+    case lineTypes.CHARACTER:
+    case lineTypes.PARENTHETICAL:
       return lineTypes.DIALOGUE
       break
     case lineTypes.DIALOGUE:
