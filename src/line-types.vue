@@ -1,3 +1,4 @@
+<script>
 export const lineTypes = {
   ACT: "act",
   SCENE_HEADING: "scene_heading",
@@ -47,3 +48,4 @@ export const nextType = function (t) {
 }
 
 export default {}
+</script>
