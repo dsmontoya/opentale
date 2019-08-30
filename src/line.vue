@@ -1,5 +1,5 @@
 <template>
-  <input class="line" v-model="line.text" v-bind:class="[line.type, {focused: isFocused, blured: !isFocused}]"  v-on:keydown.enter.prevent="newLine" v-on:keydown.delete.passive="del" :tabindex="lineIndex" @focus="focus" @blur="blur" v-focus>
+  <input class="line" v-model="line.text" v-bind:class="[line.type, {focused: isFocused, blured: !isFocused}]"  v-on:keydown.enter.prevent="newLine" v-on:keydown.delete.passive="del" v-on:keydown.tab.prevent="tab" :tabindex="lineIndex" @focus="focus" @blur="blur" v-focus>
 </template>
 
 <script>
@@ -28,6 +28,9 @@ export default {
       }
       this.isFocused = true
     },
+    tab: function (e) {
+      this.$emit("tab", this.line.type, this.lineIndex)
+    },
     update:function (e) {
      console.log("line",this.line);
     // console.log("fountain",e)
@@ -44,7 +47,7 @@ export default {
       this.$emit("newLine", this.emitLine())
     },
     emitLine: function() {
-    
+
       var el = this.$el
       var tabIndex = el.tabIndex
       return {

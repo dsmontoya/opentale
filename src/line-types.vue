@@ -45,6 +45,25 @@ export default {
       default:
 
     }
+  },
+  tabNext: function (t) {
+    var values = this.values()
+    for (var i = 0; i < values.length; i++) {
+      var value = values[i]
+      if (i == values.length-1) {
+        return values[0]
+      }
+      if (value == t) {
+        var newValue = values[i+1]
+        if (newValue instanceof Function) {
+          return values[0]
+        }
+        return newValue
+      }
+    }
+  },
+  values: function () {
+    return Object.values(this)
   }
 }
 </script>

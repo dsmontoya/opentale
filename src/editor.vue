@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class ="editor" contenteditable="true" @input="update" v-on:input.stop="preventTest($event)" v-on:keydown.arrow-down.prevent="arrowDown" v-on:keydown.arrow-up.prevent="arrowUp">
-      <script-line v-for="(line,index) in lines" :line-index=index @backspace="backspace" @delete="del" @newLine="newLine" :line=line></script-line>
+      <script-line v-for="(line,index) in lines" :line-index=index @backspace="backspace" @delete="del" @newLine="newLine" @tab="tab" :line=line></script-line>
     </div>
   <div v-html="compiledFountain"></div>
 </div>
@@ -87,6 +87,10 @@ export default {
    console.log("fountain",e)
    this.$emit("update",e.target)
      //this.input = e.target.value
+   },
+   tab: function(t,i){
+     var line = this.lines[i]
+     line.type = LineType.tabNext(line.type)
    },
    newLine:function(line){
      var split
