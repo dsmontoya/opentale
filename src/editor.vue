@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class ="editor" contenteditable="true" @input="update" v-on:input.stop="preventTest($event)" v-on:keydown.arrow-down.prevent="arrowDown" v-on:keydown.arrow-up.prevent="arrowUp">
+    <div class ="editor" contenteditable="true" v-on:keydown.arrow-down.prevent="arrowDown" v-on:keydown.arrow-up.prevent="arrowUp">
       <script-line v-for="(line,index) in lines" :line-index=index @backspace="backspace" @delete="del" @newLine="newLine" @tab="tab" :line=line></script-line>
     </div>
   <div v-html="compiledFountain"></div>
@@ -14,7 +14,15 @@ import LineType from './line-types'
 const fountainConverter = require('fountain-converter');
 
 export default {
+
   data: function(){
+    const old_on = this.$on;
+    this.$on = (...args) => {
+      console.log(args);
+      // custom logic here like pushing to a callback array or something
+      old_on.apply(this, args);
+      console.log("lol");
+    };
     return {
       lines:[{text:'', type: LineType.SCENE_HEADING}]
     }
@@ -93,6 +101,7 @@ export default {
      line.type = LineType.tabNext(line.type)
    },
    newLine:function(line){
+     console.log("line",line);
      var split
      var newChild
      split = this.splitText(line.text, line.selectionStart)
