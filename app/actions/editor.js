@@ -1,4 +1,11 @@
 // @flow
+import lineTypes from "../constants/lineTypes";
+
+export const NEXT_LINE_TYPE = 'NEXT_LINE_TYPE';
+export const PREV_LINE_TYPE = 'PREV_LINE_TYPE';
+export const TAB_NEXT_LINE_TYPE = 'TAB_NEXT_LINE_TYPE';
+export const TAB_PREV_LINE_TYPE = 'TAB_PREV_LINE_TYPE';
+
 export const extraLineTypes = {
   FORMATTING: {
     BOLD: "bold",
@@ -10,17 +17,31 @@ export const extraLineTypes = {
   CUSTOM: "custom"
 }
 
-export default {
-  ACT: "act",
-  SCENE_HEADING: "scene_heading",
-  ACTION: "action",
-  CHARACTER: "character",
-  DIALOGUE: "dialogue",
-  PARENTHETICAL: "parenthetical",
-  TRANSITION: "transition",
-  SHOT: "shot",
-  NORMAL: "normal",
+export function nextLineType() {
+  return {
+    type: NEXT_LINE_TYPE
+  }
+}
 
+export function prevLineType() {
+  return {
+    type: PREV_LINE_TYPE
+  }
+}
+
+export function tabNextLineType() {
+  return {
+    type: TAB_NEXT_LINE_TYPE
+  }
+}
+
+export function tabPrevLineType() {
+  return {
+    type: TAB_PREV_LINE_TYPE
+  }
+}
+
+export default {
   next: function (t) {
     switch (t) {
       case this.ACTION:

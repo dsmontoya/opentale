@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom';
 import routes from '../constants/routes';
 import styles from './Editor.css';
 
-type Props = {};
+type Props = {
+  editor: string
+};
 
 function EditButton(props) {
   return (
@@ -44,6 +46,9 @@ export default class Editor extends Component<Props> {
   };
 
   render() {
+    const {
+     editor
+    } = this.props;
     return (
       <div>
         <Link to={routes.HOME}>
@@ -51,6 +56,7 @@ export default class Editor extends Component<Props> {
         </Link>
         <EditButton cmd="italic" />
         <EditButton cmd="insertHTML" arg="<div class='test'></div>" />
+        line type: {editor}
         <ContentEditable
         innerRef={this.contentEditable}
         html={this.state.html} // innerHTML of the editable div

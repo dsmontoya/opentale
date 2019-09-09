@@ -1,0 +1,11 @@
+{
+  "ACT": "act",
+  "SCENE_HEADING": "scene_heading",
+  "ACTION": "action",
+  "CHARACTER": "character",
+  "DIALOGUE": "dialogue",
+  "PARENTHETICAL": "parenthetical",
+  "TRANSITION": "transition",
+  "SHOT": "shot",
+  "NORMAL": "normal"
+}
