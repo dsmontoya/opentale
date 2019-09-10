@@ -2,7 +2,6 @@ import type { Dispatch as ReduxDispatch, Store as ReduxStore } from 'redux';
 
 export type counterStateType = {
   +counter: number
-  +editor: string
   +lineType: string
 };
 

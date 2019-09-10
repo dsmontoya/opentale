@@ -6,7 +6,8 @@ import * as EditorActions from '../actions/editor';
 function mapStateToProps(state) {
   console.log("map state ",state)
   return {
-    editor: state.editor
+    editor: state.editor,
+    lineType: state.lineType,
   };
 }
 

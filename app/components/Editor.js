@@ -6,7 +6,8 @@ import routes from '../constants/routes';
 import styles from './Editor.css';
 
 type Props = {
-  editor: string
+  editor: string,
+  lineType: string
 };
 
 function EditButton(props) {
@@ -47,7 +48,8 @@ export default class Editor extends Component<Props> {
 
   render() {
     const {
-     editor
+     editor,
+     lineType
     } = this.props;
     return (
       <div>
@@ -56,7 +58,7 @@ export default class Editor extends Component<Props> {
         </Link>
         <EditButton cmd="italic" />
         <EditButton cmd="insertHTML" arg="<div class='test'></div>" />
-        line type: {editor}
+        line type: {lineType}
         <ContentEditable
         innerRef={this.contentEditable}
         html={this.state.html} // innerHTML of the editable div
