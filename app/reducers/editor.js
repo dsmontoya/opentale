@@ -1,44 +1,55 @@
 // @flow
-import { NEXT_LINE_TYPE, TAB_NEXT_LINE_TYPE } from '../actions/editor';
+import { NEXT_LINE_TYPE, TAB_NEXT_LINE_TYPE, UPDATE_HTML } from '../actions/editor';
 import type { Action } from './types';
 import lineTypes from "../constants/lineTypes";
+import styles from '../components/Editor.css';
+import { switchCase } from '@babel/types';
 
-export function lineType(state: string, action: Action) {
-  console.log("state editor",state)
-  console.log("action",action)
-  switch (action) {
-    case NEXT_LINE_TYPE:
-      next(state)
+export function html(state: string = "<div class='"+styles[lineTypes.SCENE_HEADING]+"'>hey</div>", action: Action) {
+  console.log("html",state)
+  switch (action.type) {
+    case UPDATE_HTML:
+      return action.html
       break;
   
-    case TAB_NEXT_LINE_TYPE:
-      tabNext(state)
-      break;
     default:
-      return lineTypes.SCENE_HEADING;
+      return state
+  }
+}
+
+export function lineType(state: string = lineTypes.SCENE_HEADING, action: Action) {
+  console.log("state editor",state)
+  console.log("action",action)
+  switch (action.type) {
+    case NEXT_LINE_TYPE:
+      return next(state)
+    case TAB_NEXT_LINE_TYPE:
+      return tabNext(state)
+    default:
+      return state
   }
 }
 
 function next(t) {
   switch (t) {
-    case this.ACTION:
-    case this.SHOT:
-    case this.SCENE_HEADING:
-      return this.ACTION
+    case lineTypes.ACTION:
+    case lineTypes.SHOT:
+    case lineTypes.SCENE_HEADING:
+      return lineTypes.ACTION
       break
-    case this.CHARACTER:
-    case this.PARENTHETICAL:
-      return this.DIALOGUE
+    case lineTypes.CHARACTER:
+    case lineTypes.PARENTHETICAL:
+      return lineTypes.DIALOGUE
       break
-    case this.DIALOGUE:
-      return this.CHARACTER
+    case lineTypes.DIALOGUE:
+      return lineTypes.CHARACTER
       break
-    case this.TRANSITION:
-    case this.ACT:
-      return this.SCENE_HEADING
+    case lineTypes.TRANSITION:
+    case lineTypes.ACT:
+      return lineTypes.SCENE_HEADING
       break
-    case this.NORMAL:
-      return this.NORMAL
+    case lineTypes.NORMAL:
+      return lineTypes.NORMAL
       break
     default:
 

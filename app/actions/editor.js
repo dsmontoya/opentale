@@ -1,10 +1,13 @@
 // @flow
+import type { GetState, Dispatch } from '../reducers/types';
 import lineTypes from "../constants/lineTypes";
+import styles from '../components/Editor.css';
 
 export const NEXT_LINE_TYPE = 'NEXT_LINE_TYPE';
 export const PREV_LINE_TYPE = 'PREV_LINE_TYPE';
 export const TAB_NEXT_LINE_TYPE = 'TAB_NEXT_LINE_TYPE';
 export const TAB_PREV_LINE_TYPE = 'TAB_PREV_LINE_TYPE';
+export const UPDATE_HTML = "UPDATE_HTML"
 
 export const extraLineTypes = {
   FORMATTING: {
@@ -17,11 +20,35 @@ export const extraLineTypes = {
   CUSTOM: "custom"
 }
 
+export function nextLine(evt: any) {
+  return (dispatch: Dispatch, getState: GetState) => {
+    console.log("evt",evt)
+    var selection = window.getSelection()
+    var focusNode = selection.focusNode
+    var tagName = focusNode.tagName
+    var nativeEvent = evt.nativeEvent
+    dispatch(updateHTML(evt.target.value))
+    if (nativeEvent.inputType == "insertParagraph") {
+      console.log("selection",selection)
+      console.log("focusNode",focusNode, tagName)
+      console.log("new paragraph")
+      dispatch(nextLineType());
+      const { lineType } = getState();
+      if (tagName == "DIV") {
+        focusNode.className = styles[lineType]
+        dispatch(updateHTML(document.getElementsByTagName("article")[0].innerHTML))
+      }
+    }
+  };
+}
+
 export function nextLineType() {
   return {
     type: NEXT_LINE_TYPE
   }
 }
+
+//TODO action for new line
 
 export function prevLineType() {
   return {
@@ -38,5 +65,13 @@ export function tabNextLineType() {
 export function tabPrevLineType() {
   return {
     type: TAB_PREV_LINE_TYPE
+  }
+}
+
+export function updateHTML(html: string){
+  console.log("updating html",html)
+  return {
+    type: UPDATE_HTML,
+    html: html
   }
 }

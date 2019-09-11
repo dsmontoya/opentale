@@ -8,6 +8,7 @@ function mapStateToProps(state) {
   return {
     editor: state.editor,
     lineType: state.lineType,
+    html: state.html
   };
 }
 

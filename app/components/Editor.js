@@ -6,8 +6,10 @@ import routes from '../constants/routes';
 import styles from './Editor.css';
 
 type Props = {
+  nextLine: () => void,
   editor: string,
-  lineType: string
+  lineType: string,
+  html: string
 };
 
 function EditButton(props) {
@@ -29,27 +31,14 @@ export default class Editor extends Component<Props> {
   constructor() {
       super()
       this.contentEditable = React.createRef();
-      this.state = {currentType: "scene_heading", html: "<div class='scene_heading'>hey</div>"};
-      console.log("yay",this.contentEditable)
     };
-
-
-  handleChange = (evt: any) => {
-    console.log("evt",evt)
-    var selection = window.getSelection()
-    var focusNode = selection.focusNode
-    var tagName = focusNode.tagName
-    var nativeEvent = evt.nativeEvent
-    if (nativeEvent.inputType == "insertParagraph") {
-      console.log("new paragraph")
-    }
-    this.setState({html: evt.target.value});
-  };
 
   render() {
     const {
      editor,
-     lineType
+     lineType,
+     nextLine,
+     html
     } = this.props;
     return (
       <div>
@@ -61,9 +50,9 @@ export default class Editor extends Component<Props> {
         line type: {lineType}
         <ContentEditable
         innerRef={this.contentEditable}
-        html={this.state.html} // innerHTML of the editable div
+        html={html} // innerHTML of the editable div
         disabled={false}       // use true to disable editing
-        onChange={this.handleChange} // handle innerHTML change
+        onChange={nextLine} // handle innerHTML change
         tagName='article' // Use a custom HTML tag (uses a div by default)
         />
       </div>
