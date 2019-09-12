@@ -5,6 +5,7 @@ import styles from '../components/Editor.css';
 
 export const NEXT_LINE_TYPE = 'NEXT_LINE_TYPE';
 export const PREV_LINE_TYPE = 'PREV_LINE_TYPE';
+export const SET_LINE_TYPE = 'SET_LINE_TYPE';
 export const TAB_NEXT_LINE_TYPE = 'TAB_NEXT_LINE_TYPE';
 export const TAB_PREV_LINE_TYPE = 'TAB_PREV_LINE_TYPE';
 export const UPDATE_HTML = "UPDATE_HTML"
@@ -18,6 +19,18 @@ export const extraLineTypes = {
     CENTER: "center"
   },
   CUSTOM: "custom"
+}
+
+export function handleClick(evt: any) {
+  return (dispatch: Dispatch, getState: GetState) => {
+    const { lineType } = getState();
+    var target = evt.target
+    var targetLineType = target.className.split("__")[1]
+    console.log(targetLineType,lineType)
+    if (targetLineType && lineType != targetLineType) {
+      dispatch(setLineType(targetLineType))
+    }
+  }
 }
 
 export function nextLine(evt: any) {
@@ -53,6 +66,13 @@ export function nextLineType() {
 export function prevLineType() {
   return {
     type: PREV_LINE_TYPE
+  }
+}
+
+export function setLineType(lineType: string) {
+  return {
+    type: SET_LINE_TYPE,
+    lineType: lineType
   }
 }
 

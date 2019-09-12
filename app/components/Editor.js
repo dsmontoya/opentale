@@ -38,6 +38,7 @@ export default class Editor extends Component<Props> {
      editor,
      lineType,
      nextLine,
+     handleClick,
      html
     } = this.props;
     return (
@@ -53,6 +54,7 @@ export default class Editor extends Component<Props> {
         html={html} // innerHTML of the editable div
         disabled={false}       // use true to disable editing
         onChange={nextLine} // handle innerHTML change
+        onClick={handleClick}
         tagName='article' // Use a custom HTML tag (uses a div by default)
         />
       </div>

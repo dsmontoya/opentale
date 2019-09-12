@@ -1,5 +1,5 @@
 // @flow
-import { NEXT_LINE_TYPE, TAB_NEXT_LINE_TYPE, UPDATE_HTML } from '../actions/editor';
+import { NEXT_LINE_TYPE, SET_LINE_TYPE, TAB_NEXT_LINE_TYPE, UPDATE_HTML } from '../actions/editor';
 import type { Action } from './types';
 import lineTypes from "../constants/lineTypes";
 import styles from '../components/Editor.css';
@@ -21,6 +21,8 @@ export function lineType(state: string = lineTypes.SCENE_HEADING, action: Action
   console.log("state editor",state)
   console.log("action",action)
   switch (action.type) {
+    case SET_LINE_TYPE:
+      return action.lineType
     case NEXT_LINE_TYPE:
       return next(state)
     case TAB_NEXT_LINE_TYPE:
