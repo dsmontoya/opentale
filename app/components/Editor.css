@@ -1,9 +1,9 @@
 .action {
-    
+  color: black;
 }
 .scene_heading {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 .character {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
