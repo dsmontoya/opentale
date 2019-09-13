@@ -73,7 +73,7 @@ export default class Editor extends Component<Props> {
         <EditButton cmd="italic" />
         <EditButton cmd="insertHTML" arg="<div class='test'></div>" />
         line type: {lineType}
-        <Select options={this.formatLineTypes(lineTypes)} />
+        <Select options={this.formatLineTypes(lineTypes)} className={styles.line_types} />
         <ContentEditable
         innerRef={this.contentEditable}
         html={html} // innerHTML of the editable div
