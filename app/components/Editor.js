@@ -35,26 +35,36 @@ export default class Editor extends Component<Props> {
       this.contentEditable = React.createRef();
     };
 
-    formatLineTypes(lt: any) {
-      var newLineTypes = []
-      for (var key in lt) {
-        var t = lt[key]
-        var split = t.split("_")
-        console.log("split",split)
-        var name: string = ""
-        for (let i = 0; i < split.length; i++) {
-          const element = split[i];
-          console.log("element",element)
-          console.log("uppercase before",name)
-          name += element
-          if (i != split.length-1) {
-            name += " "
-          }
+    handleSelect(obj: any, action: string) {
+      console.log(obj,action)
+    }
+
+    formatLineType(key: string) {
+      var t = lineTypes[key]
+      var split = t.split("_")
+      var name: string = ""
+      for (let i = 0; i < split.length; i++) {
+        const element = split[i];
+        name += element
+        if (i != split.length-1) {
+          name += " "
         }
-        console.log("uppercase",name)
+      }
+      return name
+    }
+
+    formatLineTypes() {
+      var newLineTypes = []
+      for (var key in lineTypes) {
+        const name = this.formatLineType(key)
         newLineTypes.push({value: key, label: name})
       }
       return newLineTypes
+    }
+
+    lineTypeToSelectOption(t: string) {
+      const key = t.toUpperCase()
+      return {value: key, label: this.formatLineType(key)}
     }
 
   render() {
@@ -72,8 +82,8 @@ export default class Editor extends Component<Props> {
         </Link>
         <EditButton cmd="italic" />
         <EditButton cmd="insertHTML" arg="<div class='test'></div>" />
-        line type: {lineType}
-        <Select options={this.formatLineTypes(lineTypes)} className={styles.line_types} />
+        line type: {lineType.toUpperCase()}
+        <Select options={this.formatLineTypes()} onChange={this.handleSelect} value={this.lineTypeToSelectOption(lineType)} className={styles.line_types} />
         <ContentEditable
         innerRef={this.contentEditable}
         html={html} // innerHTML of the editable div
