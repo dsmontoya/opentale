@@ -33,24 +33,23 @@ export function handleClick(evt: any) {
   }
 }
 
+export function handleSelect(option: any) {
+  return (dispatch: Dispatch, getState: GetState) => {
+    const lineType = option.value.toLowerCase()
+    dispatch(setLineType(lineType))
+    updateSelection(lineType)(dispatch, getState)
+  }
+}
+
 export function nextLine(evt: any) {
   return (dispatch: Dispatch, getState: GetState) => {
     console.log("evt",evt)
-    var selection = window.getSelection()
-    var focusNode = selection.focusNode
-    var tagName = focusNode.tagName
     var nativeEvent = evt.nativeEvent
     dispatch(updateHTML(evt.target.value))
     if (nativeEvent.inputType == "insertParagraph") {
-      console.log("selection",selection)
-      console.log("focusNode",focusNode, tagName)
-      console.log("new paragraph")
       dispatch(nextLineType());
       const { lineType } = getState();
-      if (tagName == "DIV") {
-        focusNode.className = styles[lineType]
-        dispatch(updateHTML(document.getElementsByTagName("article")[0].innerHTML))
-      }
+      updateSelection(lineType)(dispatch, getState)
     }
   };
 }
@@ -93,5 +92,28 @@ export function updateHTML(html: string){
   return {
     type: UPDATE_HTML,
     html: html
+  }
+}
+
+function updateSelection(lineType: string) {
+  return (dispatch: Dispatch, getState: GetState) => {
+    const selection = window.getSelection()
+    const focusNode = selection.focusNode
+    const tagName = focusNode.tagName
+    var div: Node
+    console.log("tagname",tagName)
+    if (tagName == "DIV") {
+      div = focusNode
+    } else {
+      div = focusNode.parentNode
+    }
+    updateDiv(div, lineType)(dispatch, getState)
+  }
+}
+
+function updateDiv(div: Node, lineType: string) {
+  return (dispatch: Dispatch, getState: GetState) => {
+    div.className = styles[lineType]
+    dispatch(updateHTML(document.getElementsByTagName("article")[0].innerHTML))
   }
 }

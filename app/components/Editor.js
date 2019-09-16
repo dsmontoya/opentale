@@ -1,11 +1,11 @@
 // @flow
 import React, { Component } from 'react';
-import ContentEditable from 'react-contenteditable'
-import Select from 'react-select'
+import ContentEditable from 'react-contenteditable';
 import { Link } from 'react-router-dom';
+import Select from './Select';
 import routes from '../constants/routes';
 import lineTypes from '../constants/lineTypes';
-import styles from './Editor.css';
+// import styles from './Editor.css';
 
 type Props = {
   nextLine: () => void,
@@ -28,43 +28,39 @@ function EditButton(props) {
   );
 }
 
-export default class Editor extends Component<Props> {
+export default class Editor extends Component<Props,State> {
   props: Props;
   constructor() {
-      super()
+      super();
       this.contentEditable = React.createRef();
     };
 
-    handleSelect(obj: any, action: string) {
-      console.log(obj,action)
-    }
-
-    formatLineType(key: string) {
-      var t = lineTypes[key]
-      var split = t.split("_")
-      var name: string = ""
+    formatLineType = (key: string) => {
+      var t = lineTypes[key];
+      var split = t.split('_');
+      var name: string = '';
       for (let i = 0; i < split.length; i++) {
         const element = split[i];
-        name += element
-        if (i != split.length-1) {
-          name += " "
+        name += element;
+        if (i !== split.length - 1) {
+          name += ' ';
         }
       }
-      return name
+      return name;
     }
 
     formatLineTypes() {
-      var newLineTypes = []
-      for (var key in lineTypes) {
-        const name = this.formatLineType(key)
-        newLineTypes.push({value: key, label: name})
+      let newLineTypes = [];
+      for (let key in lineTypes) {
+        const name = this.formatLineType(key);
+        newLineTypes.push({value: key, label: name});
       }
-      return newLineTypes
+      return newLineTypes;
     }
 
     lineTypeToSelectOption(t: string) {
-      const key = t.toUpperCase()
-      return {value: key, label: this.formatLineType(key)}
+      const key = t.toUpperCase();
+      return {value: key, label: this.formatLineType(key)};
     }
 
   render() {
@@ -73,8 +69,10 @@ export default class Editor extends Component<Props> {
      lineType,
      nextLine,
      handleClick,
+     handleSelect,
      html
     } = this.props;
+
     return (
       <div>
         <Link to={routes.HOME}>
@@ -82,8 +80,11 @@ export default class Editor extends Component<Props> {
         </Link>
         <EditButton cmd="italic" />
         <EditButton cmd="insertHTML" arg="<div class='test'></div>" />
-        line type: {lineType.toUpperCase()}
-        <Select options={this.formatLineTypes()} onChange={this.handleSelect} value={this.lineTypeToSelectOption(lineType)} className={styles.line_types} />
+        <Select
+        options={this.formatLineTypes()}
+        value={this.lineTypeToSelectOption(lineType)}
+        onChange={handleSelect}
+        />
         <ContentEditable
         innerRef={this.contentEditable}
         html={html} // innerHTML of the editable div
