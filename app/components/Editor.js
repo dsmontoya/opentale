@@ -14,20 +14,6 @@ type Props = {
   html: string
 };
 
-function EditButton(props) {
-  return (
-    <button
-      key={props.cmd}
-      onMouseDown={evt => {
-        evt.preventDefault(); // Avoids loosing focus from the editable area
-        document.execCommand(props.cmd, false, props.arg); // Send the command to the browser
-      }}
-    >
-      {props.name || props.cmd}
-    </button>
-  );
-}
-
 export default class Editor extends Component<Props,State> {
   props: Props;
   constructor() {
@@ -78,8 +64,6 @@ export default class Editor extends Component<Props,State> {
         <Link to={routes.HOME}>
         <i className="fa fa-arrow-left fa-3x" />
         </Link>
-        <EditButton cmd="italic" />
-        <EditButton cmd="insertHTML" arg="<div class='test'></div>" />
         <Select
         options={this.formatLineTypes()}
         value={this.lineTypeToSelectOption(lineType)}
