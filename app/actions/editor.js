@@ -114,6 +114,6 @@ function updateSelection(lineType: string) {
 function updateDiv(div: Node, lineType: string) {
   return (dispatch: Dispatch, getState: GetState) => {
     div.className = styles[lineType]
-    dispatch(updateHTML(document.getElementsByTagName("article")[0].innerHTML))
+    dispatch(updateHTML(window.document.getElementsByClassName("editor")[0].innerHTML))
   }
 }

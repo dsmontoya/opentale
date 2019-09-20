@@ -5,13 +5,13 @@ import lineTypes from "../constants/lineTypes";
 import styles from '../components/Editor.css';
 import { switchCase } from '@babel/types';
 
-export function html(state: string = "<div class='"+styles[lineTypes.SCENE_HEADING]+"'>hey</div>", action: Action) {
+export function html(state: string = "<div class='" + styles[lineTypes.SCENE_HEADING] + " line " + styles.line + "'><br></div>", action: Action) {
   console.log("html",state)
   switch (action.type) {
     case UPDATE_HTML:
       return action.html
       break;
-  
+
     default:
       return state
   }
