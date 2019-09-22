@@ -3,11 +3,16 @@
 }
 .scene_heading {
   text-transform: uppercase;
+  background-color: #cbcecf;
 }
 .character {
   text-transform: uppercase;
 }
 
 .line_types {
-    text-transform: capitalize;
+  text-transform: capitalize;
+}
+
+.line {
+  line-height: 17px;
 }

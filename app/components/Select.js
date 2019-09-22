@@ -18,12 +18,17 @@ export default class Select extends Component<SelectProps, State> {
   render() {
     const { menuIsOpen } = this.state;
     const { onChange, options, value } = this.props;
+    console.log("options",options)
     return (
-      <div className={styles.container} onMouseDown={this.openMenu}>
-        <div className={styles.control}>
-          <div className={styles.singleValue}>{value.label}</div>
+      <div className="select">
+        <div className={styles.container} onMouseDown={this.openMenu}>
+          <div className={styles.control}>
+            <div className="single-value">
+              <div className={styles.singleValue}>{value.label}</div>
+            </div>
+          </div>
+          {menuIsOpen ? <Menu options={options} onChange={onChange} /> : null}
         </div>
-        {menuIsOpen ? <Menu options={options} onChange={onChange} /> : null}
       </div>
     );
   }

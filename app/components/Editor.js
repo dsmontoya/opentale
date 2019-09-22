@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Select from './Select';
 import routes from '../constants/routes';
 import lineTypes from '../constants/lineTypes';
+import { formatLineTypes, lineTypeToSelectOption } from '../utils/select'
 // import styles from './Editor.css';
 
 type Props = {
@@ -23,34 +24,6 @@ export default class Editor extends Component<Props, State> {
     this.contentEditable = React.createRef();
   }
 
-  formatLineType = (key: string) => {
-    const t = lineTypes[key];
-    const split = t.split('_');
-    let name: string = '';
-    for (let i = 0; i < split.length; i += 1) {
-      const element = split[i];
-      name += element;
-      if (i !== split.length - 1) {
-        name += ' ';
-      }
-    }
-    return name;
-  };
-
-  formatLineTypes() {
-    const newLineTypes = [];
-    Object.keys(lineTypes).forEach(key => {
-      const name = this.formatLineType(key);
-      newLineTypes.push({ value: key, label: name });
-    });
-    return newLineTypes;
-  }
-
-  lineTypeToSelectOption(t: string) {
-    const key = t.toUpperCase();
-    return { value: key, label: this.formatLineType(key) };
-  }
-
   render() {
     const { lineType, nextLine, handleClick, handleSelect, html } = this.props;
 
@@ -60,8 +33,8 @@ export default class Editor extends Component<Props, State> {
           <i className="fa fa-arrow-left fa-3x" />
         </Link>
         <Select
-          options={this.formatLineTypes()}
-          value={this.lineTypeToSelectOption(lineType)}
+          options={formatLineTypes()}
+          value={lineTypeToSelectOption(lineType)}
           onChange={handleSelect}
         />
         <ContentEditable
@@ -70,7 +43,8 @@ export default class Editor extends Component<Props, State> {
           disabled={false} // use true to disable editing
           onChange={nextLine} // handle innerHTML change
           onClick={handleClick}
-          tagName="article" // Use a custom HTML tag (uses a div by default)
+          className="editor"
+          tagName="div" // Use a custom HTML tag (uses a div by default)
         />
       </div>
     );
