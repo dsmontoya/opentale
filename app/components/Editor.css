@@ -1,18 +1,79 @@
+.line {
+  line-height: 17px !important;
+  font-size: 12pt;
+  margin-top: 0 !important;
+  margin-bottom: 17px !important;
+}
+
+.act {
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: underline;
+  width: fit-content;
+  min-width: 0.1in;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .action {
   color: black;
 }
+
+.character {
+  text-transform: uppercase;
+  margin-top: 10px;
+  margin-left: 1.9in !important;
+}
+
+.dialogue {
+  margin-left: 0.9in !important;
+  margin-right: 1.35in !important;
+}
+
+.character + .dialogue {
+  margin-top: -17px !important;
+  margin-bottom: 17px !important;
+}
+
+.parenthetical {
+  margin-left: 1.4in !important;
+  margin-right: 1.4in !important;
+  margin-bottom: 0 !important;
+  backface-visibility: visible;
+}
+
+.character + .parenthetical {
+  margin-top: -17px !important;
+}
+
+.parenthetical::after {
+  position: absolute;
+  content: ')';
+}
+
+.parenthetical::before {
+  position: static;
+  margin-left: -0.1in;
+  content: '(';
+}
+
 .scene_heading {
   text-transform: uppercase;
-  background-color: #cbcecf;
+  background-color: silver;
+  margin-top: -3px !important;
+  margin-bottom: 20px !important;
 }
-.character {
+
+.shot {
+  text-transform: uppercase;
+}
+
+.transition {
+  text-align: right;
   text-transform: uppercase;
 }
 
 .line_types {
   text-transform: capitalize;
-}
-
-.line {
-  line-height: 17px;
 }
