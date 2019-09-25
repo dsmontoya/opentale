@@ -18,7 +18,6 @@ export default class Select extends Component<SelectProps, State> {
   render() {
     const { menuIsOpen } = this.state;
     const { onChange, options, value } = this.props;
-    console.log("options",options)
     return (
       <div className="select">
         <div className={styles.container} onMouseDown={this.openMenu}>
