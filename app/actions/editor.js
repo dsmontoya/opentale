@@ -44,7 +44,10 @@ export function nextLine(evt: ContentEditableEvent) {
     console.log('evt', evt);
     const { nativeEvent } = evt;
     dispatch(updateHTML(evt.target.value));
-    if (nativeEvent.inputType === 'insertParagraph') {
+    if (
+      nativeEvent.inputType === 'insertParagraph' ||
+      (nativeEvent.inputType === 'insertText' && nativeEvent.data === null)
+    ) {
       dispatch(nextLineType());
       const { lineType } = getState();
       updateSelection(lineType)(dispatch, getState);
