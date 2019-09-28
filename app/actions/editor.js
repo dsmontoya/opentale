@@ -45,6 +45,12 @@ export function nextLine(evt: ContentEditableEvent) {
     const { nativeEvent } = evt;
     dispatch(updateHTML(evt.target.value));
     if (
+      nativeEvent.inputType === 'deleteContentBackward' ||
+      nativeEvent.inputType === 'deleteContentForward'
+    ) {
+      removeSpan()(dispatch);
+    }
+    if (
       nativeEvent.inputType === 'insertParagraph' ||
       (nativeEvent.inputType === 'insertText' && nativeEvent.data === null)
     ) {
@@ -119,5 +125,28 @@ function updateDiv(div: Node, lineType: string) {
     dispatch(
       updateHTML(window.document.getElementsByClassName('editor')[0].innerHTML)
     );
+  };
+}
+
+function removeSpan() {
+  return (dispatch: Dispatch) => {
+    const selection = window.getSelection();
+    const { focusNode } = selection;
+    const { nextSibling } = focusNode;
+    if (nextSibling) {
+      const textLen = focusNode.textContent.length;
+      const range = new Range();
+      focusNode.textContent += nextSibling.textContent;
+      focusNode.parentNode.removeChild(nextSibling);
+      dispatch(
+        updateHTML(
+          window.document.getElementsByClassName('editor')[0].innerHTML
+        )
+      );
+      selection.removeAllRanges();
+      range.setStart(focusNode, textLen);
+      range.setEnd(focusNode, textLen);
+      selection.addRange(range);
+    }
   };
 }
