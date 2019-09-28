@@ -44,8 +44,11 @@ export function nextLine(evt: ContentEditableEvent) {
     console.log('evt', evt);
     const { nativeEvent } = evt;
     dispatch(updateHTML(evt.target.value));
-    if (nativeEvent.inputType === 'deleteContentBackward') {
-      removeSpan()(dispatch, getState);
+    if (
+      nativeEvent.inputType === 'deleteContentBackward' ||
+      nativeEvent.inputType === 'deleteContentForward'
+    ) {
+      removeSpan()(dispatch);
     }
     if (
       nativeEvent.inputType === 'insertParagraph' ||
@@ -126,33 +129,24 @@ function updateDiv(div: Node, lineType: string) {
 }
 
 function removeSpan() {
-  return (dispatch: Dispatch, getState: GetState) => {
+  return (dispatch: Dispatch) => {
     const selection = window.getSelection();
     const { focusNode } = selection;
     const { nextSibling } = focusNode;
     if (nextSibling) {
-      console.log("span",nextSibling)
-      const textLen = focusNode.textContent.length
-      let range = new Range();
-      range.selectNodeContents(nextSibling);
-      const selectionRange = selection.getRangeAt(0);
-      selection.removeAllRanges()
-      selection.addRange(range)
-      document.execCommand("removeFormat")
-      selection.removeAllRanges()
-      range.setStart(focusNode,textLen);
-      range.setEnd(focusNode,textLen);
-      selection.addRange(range)
-
-
-
-      console.log(selection)
-      // console.log(focusNode.textContent)
-      // console.log(nextSibling.textContent)
-      // focusNode.textContent += nextSibling.textContent;
-      // focusNode.parentNode.removeChild(nextSibling)
-      // dispatch(updateHTML(window.document.getElementsByClassName('editor')[0].innerHTML))
+      const textLen = focusNode.textContent.length;
+      const range = new Range();
+      focusNode.textContent += nextSibling.textContent;
+      focusNode.parentNode.removeChild(nextSibling);
+      dispatch(
+        updateHTML(
+          window.document.getElementsByClassName('editor')[0].innerHTML
+        )
+      );
+      selection.removeAllRanges();
+      range.setStart(focusNode, textLen);
+      range.setEnd(focusNode, textLen);
+      selection.addRange(range);
     }
-
-  }
+  };
 }
