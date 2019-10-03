@@ -135,7 +135,7 @@ function removeSpan() {
     const { nextSibling } = focusNode;
     if (nextSibling) {
       const textLen = focusNode.textContent.length;
-      const range = new Range();
+      const range = window.document.createRange();
       focusNode.textContent += nextSibling.textContent;
       focusNode.parentNode.removeChild(nextSibling);
       dispatch(
