@@ -46,4 +46,64 @@ describe('actions', () => {
       })
     ).toBe(true);
   });
+
+  it('should remove span', () => {
+    setupRange();
+    setupSelection();
+    const evt = {
+      target: {
+        value: ''
+      },
+      nativeEvent: {
+        inputType: 'deleteContentBackward'
+      }
+    };
+    window.document.body.innerHTML = `<!DOCTYPE html><body><div class='editor'>text</div></body>`;
+    const fn = actions.nextLine(evt);
+    const dispatch = spy();
+    fn(dispatch);
+    const selection = window.getSelection();
+    const { focusNode } = selection;
+    expect(
+      dispatch.calledWith({
+        type: actions.UPDATE_HTML,
+        html: 'text'
+      })
+    ).toBe(true);
+    expect(
+      focusNode.parentNode.removeChild.calledWith(
+        window.getSelection().focusNode.nextSibling
+      )
+    ).toBe(true);
+    expect(focusNode.textContent).toBe('sample text');
+  });
 });
+
+const setupRange = () => {
+  global.window.document.createRange = () => ({
+    setStart: spy(),
+    setEnd: spy(),
+    commonAncestorContainer: {
+      nodeName: 'BODY'
+    }
+  });
+};
+
+const setupSelection = () => {
+  const selection = {
+    focusNode: {
+      textContent: 'sample ',
+      nextSibling: {
+        textContent: 'text'
+      },
+      parentNode: {
+        removeChild: spy()
+      }
+    },
+    addRange: spy(),
+    removeAllRanges: spy()
+  };
+  window.getSelection = () => {
+    return selection;
+  };
+};
