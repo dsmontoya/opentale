@@ -12,6 +12,7 @@ type Props = {
   handleClick: () => void,
   handleSelect: () => void,
   nextLine: () => void,
+  onPaste: () => void,
   lineType: string,
   html: string
 };
@@ -25,7 +26,7 @@ export default class Editor extends Component<Props, State> {
   }
 
   render() {
-    const { lineType, nextLine, handleClick, handleSelect, html } = this.props;
+    const { lineType, nextLine, handleClick, handleSelect, onPaste, html } = this.props;
 
     return (
       <div>
@@ -42,6 +43,7 @@ export default class Editor extends Component<Props, State> {
           html={html} // innerHTML of the editable div
           disabled={false} // use true to disable editing
           onChange={nextLine} // handle innerHTML change
+          onPaste={onPaste}
           onClick={handleClick}
           className="editor"
           tagName="div" // Use a custom HTML tag (uses a div by default)
