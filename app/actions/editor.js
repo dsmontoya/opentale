@@ -44,76 +44,54 @@ export function handleSelect(option: Option) {
 export function onPaste(evt: React.ClipboardEvent) {
   return (dispatch: Dispatch, getState: GetState) => {
     evt.preventDefault();
-    const cb = clipboard.readHTML('clipboard');
-    console.log(cb);
-    const container = document.createElement('div');
-    const newContainer = document.createElement('div');
-    let range = window.getSelection().getRangeAt(0);
     const { currentTarget } = evt;
-    container.innerHTML = cb;
-    console.log("container html",container.innerHTML)
-    const { children } = container;
-    for (let i = 0; i < children.length; i += 1) {
-      const element = children[i];
-      const { tagName } = element;
-      const newDiv = document.createElement('div');
-      const { lineType } = getState();
-      switch (tagName) {
-        case 'DIV':
-          newDiv.className = element.className;
-          newDiv.textContent = element.textContent;
-          break;
-        case 'SPAN':
-          newDiv.className = `${styles[lineType]} ${styles.line}`;
-          newDiv.textContent = element.textContent;
-          break;
-        default:
-          break;
-      }
-      newContainer.appendChild(newDiv);
-    }
-    const { startContainer, startOffset, endContainer, endOffset } = range;
-    const startContainerText = startContainer.textContent.slice(0, startOffset);
-    const endContainerText = endContainer.textContent.slice(
-      endOffset,
-      endContainer.textContent.length
-    );
+    const { lineType } = getState();
+    const newContainer = formatClipboard(lineType);
+    let {
+      startContainer,
+      endContainer,
+      startContainerText,
+      endContainerText
+    } = rangeValues();
     const newEndContainer = endContainer.cloneNode(true);
-    const startLineType = startContainer.parentNode.className.split('__')[1];
-    const endLineType = endContainer.parentNode.className.split('__')[1];
     document.execCommand('delete');
-    range = window.getSelection().getRangeAt(0);
-    let nextSibling: Node;
-    console.log(range.startContainer.tagName)
-    if (range.startContainer.tagName === 'DIV') {
-      ({ nextSibling } = range.startContainer);
-    }
-    if (range.startContainer.tagName === undefined) {
-      ({ nextSibling } = range.startContainer.parentNode);
-    }
-    console.log("newContainer",newContainer.innerHTML)
-    console.log("newContainer children",newContainer.children,newContainer.children.length)
+    const range = window.getSelection().getRangeAt(0);
+    ({
+      startContainer,
+      endContainer,
+      startContainerText,
+      endContainerText
+    } = rangeValues());
+    // TODO: move to rangeValues
+    let nextSibling = rangeNextSibling(range);
     for (let i = 0; i < newContainer.children.length; i += 1) {
       console.log("i",i)
-      console.log("length before",newContainer.children.length)
       const element = newContainer.children[i].cloneNode(true);
       console.log("element",element)
+      console.log("start container tagName",startContainer.tagName)
+      console.log("start container parentNode",startContainer.parentNode)
+      console.log("start container text",startContainerText)
+      console.log("startContainerText !== ''",startContainerText !== '')
       console.log("nextSibling",nextSibling)
-      if (i === 0) {
-        if (range.startContainer.tagName === undefined) {
-          console.log("should append text")
-          // TODO: insert new text between current text
-          range.startContainer.parentNode.textContent += element.textContent;
-          // eslint-disable-next-line no-continue
-          continue;
-        }
-      }
+      // if (i === 0) {
+      //   if (startContainer.tagName === undefined) {
+      //     console.log("should append text")
+      //     // TODO: insert new text between current text
+      //     console.log("text A",startContainer.parentNode.textContent)
+      //     console.log("text B",element.textContent)
+      //     startContainer.parentNode.textContent += element.textContent;
+      //     // eslint-disable-next-line no-continue
+      //     continue;
+      //   }
+      // }
+      console.log("before",window.document.getElementsByClassName('editor')[0].innerHTML)
+
       currentTarget.insertBefore(element, nextSibling);
       ({ nextSibling } = element);
-      console.log("length after",newContainer.children.length)
+      console.log("after",window.document.getElementsByClassName('editor')[0].innerHTML)
       if (i === newContainer.children.length - 1) {
         const newRange = window.document.createRange();
-        console.log("element range",range.startContainer)
+        console.log("element range",startContainer)
         newRange.setStart(element.firstChild, element.textContent.length);
         window.getSelection().removeAllRanges();
         window.getSelection().addRange(newRange);
@@ -121,9 +99,9 @@ export function onPaste(evt: React.ClipboardEvent) {
     }
     if (startContainerText !== '') {
       console.log("start text",startContainerText)
-      range.startContainer.textContent = startContainerText;
+      startContainer.textContent = startContainerText;
     } else {
-      currentTarget.removeChild(range.startContainer);
+      currentTarget.removeChild(startContainer);
     }
     if (endContainerText !== '') {
       newEndContainer.textContent = endContainerText;
@@ -194,6 +172,67 @@ export function updateHTML(html: string) {
   return {
     type: UPDATE_HTML,
     html
+  };
+}
+
+function formatClipboard(lineType: string): HTMLDivElement {
+  const cb = clipboard.readHTML('clipboard');
+  const container = document.createElement('div');
+  const newContainer = document.createElement('div');
+  console.log(cb);
+  container.innerHTML = cb;
+  const { children } = container;
+  for (let i = 0; i < children.length; i += 1) {
+    const element = children[i];
+    const { tagName } = element;
+    const newDiv = document.createElement('div');
+    switch (tagName) {
+      case 'DIV':
+        newDiv.className = element.className;
+        newDiv.textContent = element.textContent;
+        break;
+      case 'SPAN':
+        newDiv.className = `${styles[lineType]} ${styles.line}`;
+        newDiv.textContent = element.textContent;
+        break;
+      default:
+        // eslint-disable-next-line no-continue
+        continue;
+    }
+    newContainer.appendChild(newDiv);
+  }
+  return newContainer;
+}
+
+function rangeNextSibling(range: Range): Node & ParentNode {
+  if (range.startContainer.tagName === 'DIV') {
+    return range.startContainer;
+  }
+  if (range.startContainer.tagName === undefined) {
+    return range.startContainer.parentNode;
+  }
+}
+
+function rangeValues() {
+  const range = window.getSelection().getRangeAt(0);
+  console.log(range)
+  const { startContainer, startOffset, endContainer, endOffset } = range;
+  const startContainerText = startContainer.textContent.slice(0, startOffset);
+  const endContainerText = endContainer.textContent.slice(
+    endOffset,
+    endContainer.textContent.length
+  );
+  const startLineType = startContainer.parentNode.className.split('__')[1];
+  const endLineType = endContainer.parentNode.className.split('__')[1];
+  return {
+    startContainer,
+    startOffset,
+    endContainer,
+    endOffset,
+    endContainerText,
+    startContainerText,
+    startLineType,
+    endLineType
   };
 }
 
