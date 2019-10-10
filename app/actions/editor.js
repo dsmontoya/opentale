@@ -82,9 +82,6 @@ export function onPaste(evt: React.ClipboardEvent) {
           getDiv(startContainer).textContent = startContainerText;
           ({ startContainer } = rangeValues());
           nextSibling = getDiv(startContainer).nextSibling;
-
-          // keep start text
-          // insert element after
         }
       }
       console.log("nextSibling",nextSibling)
