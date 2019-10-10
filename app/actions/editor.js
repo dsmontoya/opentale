@@ -47,32 +47,48 @@ export function onPaste(evt: React.ClipboardEvent) {
     const { currentTarget } = evt;
     const { lineType } = getState();
     const newContainer = formatClipboard(lineType);
-    let {
-      startContainer,
-      endContainer,
+    let { startContainer, endContainer } = rangeValues();
+    const newEndContainer = endContainer.cloneNode(true);
+    document.execCommand('delete');
+    const {
+      startLineType,
+      endLineType,
       startContainerText,
       endContainerText
     } = rangeValues();
-    const newEndContainer = endContainer.cloneNode(true);
-    document.execCommand('delete');
-    const range = window.getSelection().getRangeAt(0);
-    ({
-      startContainer,
-      endContainer,
-      startContainerText,
-      endContainerText
-    } = rangeValues());
+    ({ startContainer, endContainer } = rangeValues());
     // TODO: move to rangeValues
-    let nextSibling = rangeNextSibling(range);
+    let nextSibling: Node & ParentNode;
     for (let i = 0; i < newContainer.children.length; i += 1) {
       console.log("i",i)
       const element = newContainer.children[i].cloneNode(true);
-      console.log("element",element)
-      console.log("start container tagName",startContainer.tagName)
-      console.log("start container parentNode",startContainer.parentNode)
-      console.log("start container text",startContainerText)
-      console.log("startContainerText !== ''",startContainerText !== '')
+      if (i === 0) {
+        console.log("element",element)
+        console.log(startLineType,element.className.split('__')[1])
+        if (startLineType === element.className.split('__')[1]) {
+          let textContent = `${startContainerText}${element.textContent}`;
+          if (newContainer.children.length === 1) {
+            textContent += endContainerText;
+          }
+          console.log("start container",startContainer.tagName)
+          getDiv(startContainer).textContent = textContent;
+          // WTF?! I have to reload the start container
+          ({ startContainer } = rangeValues());
+          console.log("start container",startContainer)
+          console.log("text content",getDiv(startContainer).textContent)
+          nextSibling = getDiv(startContainer).nextSibling;
+          continue;
+        } else {
+          getDiv(startContainer).textContent = startContainerText;
+          ({ startContainer } = rangeValues());
+          nextSibling = getDiv(startContainer).nextSibling;
+
+          // keep start text
+          // insert element after
+        }
+      }
       console.log("nextSibling",nextSibling)
+      currentTarget.insertBefore(element, nextSibling);
       // if (i === 0) {
       //   if (startContainer.tagName === undefined) {
       //     console.log("should append text")
@@ -84,29 +100,36 @@ export function onPaste(evt: React.ClipboardEvent) {
       //     continue;
       //   }
       // }
-      console.log("before",window.document.getElementsByClassName('editor')[0].innerHTML)
+    //   console.log("before",window.document.getElementsByClassName('editor')[0].innerHTML)
 
-      currentTarget.insertBefore(element, nextSibling);
-      ({ nextSibling } = element);
-      console.log("after",window.document.getElementsByClassName('editor')[0].innerHTML)
+    //   currentTarget.insertBefore(element, nextSibling);
+    //   ({ nextSibling } = element);
+    //   console.log("after",window.document.getElementsByClassName('editor')[0].innerHTML)
       if (i === newContainer.children.length - 1) {
         const newRange = window.document.createRange();
-        console.log("element range",startContainer)
-        newRange.setStart(element.firstChild, element.textContent.length);
+        const originalTextLength = element.textContent.length;
+        if (endContainerText !== '') {
+          if (endLineType === element.className.split('__')[1]) {
+            element.textContent += endContainerText;
+          } else {
+            currentTarget.insertBefore(newEndContainer, nextSibling);
+          }
+        }
+        newRange.setStart(element.firstChild, originalTextLength);
         window.getSelection().removeAllRanges();
         window.getSelection().addRange(newRange);
       }
     }
-    if (startContainerText !== '') {
-      console.log("start text",startContainerText)
-      startContainer.textContent = startContainerText;
-    } else {
-      currentTarget.removeChild(startContainer);
-    }
-    if (endContainerText !== '') {
-      newEndContainer.textContent = endContainerText;
-      currentTarget.insertBefore(newEndContainer, nextSibling);
-    }
+    // if (startContainerText !== '') {
+    //   console.log("start text",startContainerText)
+    //   startContainer.textContent = startContainerText;
+    // } else {
+    //   currentTarget.removeChild(startContainer);
+    // }
+    // if (endContainerText !== '') {
+    //   newEndContainer.textContent = endContainerText;
+    //   currentTarget.insertBefore(newEndContainer, nextSibling);
+    // }
     dispatch(
       updateHTML(window.document.getElementsByClassName('editor')[0].innerHTML)
     );
@@ -202,6 +225,16 @@ function formatClipboard(lineType: string): HTMLDivElement {
     newContainer.appendChild(newDiv);
   }
   return newContainer;
+}
+
+function getDiv(node: Node): Node & ParentNode {
+  const { tagName } = node;
+  if (tagName === undefined) {
+    return node.parentNode;
+  }
+  if (tagName === 'DIV') {
+    return node;
+  }
 }
 
 function rangeNextSibling(range: Range): Node & ParentNode {
