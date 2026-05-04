@@ -16,4 +16,6 @@ setup-mac:
 
 reinstall-specify:
 	uv tool install specify-cli --force --from git+https://github.com/github/spec-kit.git@v$(SPEC_KIT_VERSION)
+	cp .specify/memory/constitution.md .specify/memory/constitution-backup.md
 	specify init --here --force --integration kilocode
+	mv .specify/memory/constitution-backup.md .specify/memory/constitution.md
