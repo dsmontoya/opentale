@@ -11,3 +11,9 @@ setup-mac:
 	brew install Kilo-Org/tap/kilo
 
 	uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@v$(SPEC_KIT_VERSION)
+
+.PHONY: reinstall-specify
+
+reinstall-specify:
+	uv tool install specify-cli --force --from git+https://github.com/github/spec-kit.git@v$(SPEC_KIT_VERSION)
+	specify init --here --force --integration kilocode
