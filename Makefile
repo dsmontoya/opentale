@@ -8,4 +8,6 @@ setup-mac:
 	asdf plugin add uv || true
 	asdf install
 
+	brew install Kilo-Org/tap/kilo
+
 	uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@v$(SPEC_KIT_VERSION)
